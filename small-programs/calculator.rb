@@ -27,7 +27,7 @@ end
 prompt("Welcome to Calculator! Enter your name:")
 
 name = nil
-loop do 
+loop do
   name = gets.chomp
 
   if name.empty?()
@@ -53,13 +53,13 @@ loop do # main loop
   end
 
   number2 = nil
-  loop do 
+  loop do
     prompt("What's the second number? ")
     number2 = gets.chomp
-    
+
     if valid_number?(number2)
       break
-    else 
+    else
       prompt("Hmm... that doesn't look like a valid number")
     end
   end
@@ -80,27 +80,27 @@ loop do # main loop
 
     if %w(1 2 3 4).include?(operator)
       break
-    else 
+    else
       prompt("Must choose 1, 2, 3, or 4")
     end
   end
 
-prompt("#{operation_to_message(operator)} the two numbers...")
+  prompt("#{operation_to_message(operator)} the two numbers...")
 
-  result =  case operator  
+  result =  case operator
             when '1'
               number1.to_i + number2.to_i
             when '2'
               number1.to_i - number2.to_i
             when '3'
               number1.to_i * number2.to_i
-            when '4' 
+            when '4'
               number1.to_f / number2.to_f
             end
   prompt("The result is #{result}")
 
   prompt("Do you want to perform another calculation? (Y to calculate again)")
-  answer = gets.chomp 
+  answer = gets.chomp
   break unless answer.downcase().start_with?('y')
 end
 
