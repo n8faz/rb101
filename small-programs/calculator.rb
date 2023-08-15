@@ -8,7 +8,7 @@ def prompt(message)
 end
 
 def valid_number?(num)
-  num.to_i() != 0
+  num.to_i != 0
 end
 
 def operation_to_message(op)
@@ -30,7 +30,7 @@ name = nil
 loop do
   name = gets.chomp
 
-  if name.empty?()
+  if name.empty?
     prompt("Make sure to use a valid name.")
   else
     break
@@ -101,7 +101,7 @@ loop do # main loop
 
   prompt("Do you want to perform another calculation? (Y to calculate again)")
   answer = gets.chomp
-  break unless answer.downcase().start_with?('y')
+  break unless answer.downcase.start_with?('y')
 end
 
 prompt("Thank you for using the calculator. Good bye!")
