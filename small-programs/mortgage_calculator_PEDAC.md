@@ -42,4 +42,52 @@ Algorithm:
           Calculate monthly payment using formula 
 
 Code: Pseudo-code
-        
+      START
+      PRINT "Welcome to Mortgage Calculator. What is your name?"
+      SET name = nil
+      LOOP name loop
+        GET name = gets.chomp
+        IF name.empty?
+          PRINT "Make sure to use a valid name"
+        ELSE 
+          break
+      END name loop 
+      PRINT "Hello, #{name}!"
+      LOOP main loop
+        SET loan_amount = nil
+        LOOP loan amount loop
+          PRINT "Enter your loan amount" 
+          GET loan_amount = gets.chomp
+          IF loan_amount.to_i != 0
+            break
+          ELSE 
+            "That isn't a valid loan amount." 
+        END loan amount loop
+        SET apr = nil
+        LOOP APR loop
+          PRINT "Enter your APR (Annual Percentage Rate)"
+          GET apr = gets.chomp
+          IF apr.to_i != 0
+            break
+          ELSE 
+            "That isn't a valid APR."
+        END APR loop
+        SET loan_duration = nil
+        LOOP loan duration loop
+          PRINT "Enter the duration of your loan in months" 
+          GET loan_duration = gets.chomp
+          IF loan_duration.to_i != 0 
+            break
+          ELSE
+            "That isn't a valid loan duration."
+        END loan duration loop
+        SET monthly_interest = apr / 12
+        PRINT "Calculating your monthly payment..."
+        SET monthly_payment = loan_amount * (monthly_interest / (1 - (1 + monthly_interest)**(-n)))
+        PRINT "Your monthly payment is $#{monthly_payment}"
+        PRINT "Would you like to run that again? (Y to run again)"
+        GET answer = gets.chomp
+        BREAK unless answer.downcase.start_with?('y')
+      END main loop
+      PRINT "Thank you for using the mortgage calculator. See ya!"
+      END 
