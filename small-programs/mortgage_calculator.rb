@@ -24,7 +24,7 @@ loop do # main loop
 
   loan_amount = nil
   loop do # loan amount loop
-    prompt("Enter your loan amount")
+    prompt("Enter your loan amount:")
     loan_amount = gets.chomp
     if valid_number?(loan_amount)
       break
@@ -35,7 +35,7 @@ loop do # main loop
 
   apr = nil
   loop do # APR loop
-    prompt("Enter your APR (Annual Percentage Rate)")
+    prompt("Enter your APR (Annual Percentage Rate):")
     apr = gets.chomp
     if valid_number?(apr)
       break
@@ -46,7 +46,7 @@ loop do # main loop
 
   loan_duration = nil
   loop do # loan duration loop
-    prompt("Enter the duration of your loan in months")
+    prompt("Enter the duration of your loan in months:")
     loan_duration = gets.chomp
     if valid_number?(loan_duration)
       break
