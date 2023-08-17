@@ -65,7 +65,7 @@ loop do # main loop
   prompt("Calculating your monthly payment...")
 
   monthly_payment = loan_amount * (monthly_interest / (1 - (1 + monthly_interest)**(-loan_duration)))
-
+  monthly_payment = monthly_payment.round(2)
   prompt("Your monthly payment is $#{monthly_payment}")
 
   prompt("Would you like to run that again? (Y to run again)")
