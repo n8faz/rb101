@@ -6,10 +6,6 @@ def valid_number?(num)
   num.to_i != 0 
 end
 
-def percent_to_decimal(num)
-  num.to_f * 0.01
-end
-
 prompt("Welcome to Mortgage Calculator. What is your name?")
 
 name = nil 
@@ -60,13 +56,15 @@ loop do # main loop
   end
 
   loan_amount = loan_amount.to_i
-  percent_to_decimal(apr)
+  apr = apr.to_f 
+  apr = apr * 0.01 
   monthly_interest = apr / 12 
+
   loan_duration = loan_duration.to_i 
 
   prompt("Calculating your monthly payment...")
 
-  monthly_payment = loan_amount * (monthly_interest / (1 - (1 + monthly_interest)**(-n)))
+  monthly_payment = loan_amount * (monthly_interest / (1 - (1 + monthly_interest)**(-loan_duration)))
 
   prompt("Your monthly payment is $#{monthly_payment}")
 
