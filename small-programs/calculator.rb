@@ -20,16 +20,18 @@ integer?(num) || float?(num)
 end
 
 def operation_to_message(op)
-  case op
-  when '1'
-    'Adding'
-  when '2'
-    'Subtracting'
-  when '3'
-    'Mulitplying'
-  when '4'
-    'Dividing'
-  end
+  operation = case op
+                when '1'
+                  'Adding'
+                when '2'
+                  'Subtracting'
+                when '3'
+                  'Mulitplying'
+                when '4'
+                  'Dividing'
+              end
+              
+  operation
 end
 
 prompt("Welcome to Calculator! Enter your name:")
