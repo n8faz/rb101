@@ -2,8 +2,8 @@ def prompt(message)
   puts "=> #{message}"
 end
 
-def valid_number?(num)
-  num.to_i != 0 
+def negative_number?(num)
+  num.to_i < 0
 end
 
 prompt("Welcome to Mortgage Calculator. What is your name?")
@@ -26,10 +26,10 @@ loop do # main loop
   loop do # loan amount loop
     prompt("Enter your loan amount:")
     loan_amount = gets.chomp
-    if valid_number?(loan_amount)
-      break
-    else 
+    if negative_number?(loan_amount)
       prompt("That isn't a valid loan amount")
+    else 
+      break
     end
   end 
 
@@ -37,10 +37,10 @@ loop do # main loop
   loop do # APR loop
     prompt("Enter your APR (Annual Percentage Rate):")
     apr = gets.chomp
-    if valid_number?(apr)
-      break
+    if negative_number?(apr)
+      prompt("That isn't a valid APR.")
     else 
-      "That isn't a valid APR."
+      break
     end
   end
 
@@ -48,10 +48,10 @@ loop do # main loop
   loop do # loan duration loop
     prompt("Enter the duration of your loan in months:")
     loan_duration = gets.chomp
-    if valid_number?(loan_duration)
-      break
-    else
+    if negative_number?(loan_duration)
       prompt("That isn't a valid loan duration.")
+    else
+      break
     end
   end
 
