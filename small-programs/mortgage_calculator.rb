@@ -8,7 +8,7 @@ end
 
 prompt("Welcome to Mortgage Calculator. What is your name?")
 
-name = nil 
+name = nil
 loop do # name loop
   name = gets.chomp
   if name.empty?
@@ -21,17 +21,16 @@ end
 prompt("Hello, #{name}!")
 
 loop do # main loop
-
   loan_amount = nil
   loop do # loan amount loop
     prompt("Enter your loan amount:")
     loan_amount = gets.chomp
     if negative_number?(loan_amount)
       prompt("That isn't a valid loan amount")
-    else 
+    else
       break
     end
-  end 
+  end
 
   apr = nil
   loop do # APR loop
@@ -39,7 +38,7 @@ loop do # main loop
     apr = gets.chomp
     if negative_number?(apr)
       prompt("That isn't a valid APR.")
-    else 
+    else
       break
     end
   end
@@ -56,15 +55,17 @@ loop do # main loop
   end
 
   loan_amount = loan_amount.to_i
-  apr = apr.to_f 
-  apr = apr * 0.01 
-  monthly_interest = apr / 12 
+  apr = apr.to_f
+  apr *= 0.01
+  monthly_interest = apr / 12
 
-  loan_duration = loan_duration.to_i 
+  loan_duration = loan_duration.to_i
 
   prompt("Calculating your monthly payment...")
 
-  monthly_payment = loan_amount * (monthly_interest / (1 - (1 + monthly_interest)**(-loan_duration)))
+  monthly_payment = loan_amount *
+                    (monthly_interest /
+                    (1 - (1 + monthly_interest)**(-loan_duration)))
   monthly_payment = monthly_payment.round(2)
   prompt("Your monthly payment is $#{monthly_payment}")
 
@@ -74,5 +75,3 @@ loop do # main loop
 end
 
 prompt("Thank you for using the mortgage calculator. See ya!")
-
-
