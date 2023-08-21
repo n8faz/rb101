@@ -5,13 +5,13 @@ en:
   first_number?: "What's the first number?"
   invalid_number: "Hmm... that doesn't look like a valid number"
   second_number?: "What's the second number?"
-  operator_prompt: <<-MSG
-    What operation would you like to perform?
+  operator_prompt:
+    "What operation would you like to perform?
     1) Add
     2) Subtract
     3) Multiply
-    4) Divide
-    MSG
+    4) Divide"
+
   must_choose: "Must choose 1, 2, 3, or 4"
   calculating: "the two numbers..."
   result: "The result is"

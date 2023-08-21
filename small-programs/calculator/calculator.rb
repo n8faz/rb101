@@ -80,15 +80,7 @@ loop do # main loop
     end
   end
 
-  operator_prompt = <<-MSG
-  What operation would you like to perform?
-  1) Add
-  2) Subtract
-  3) Multiply
-  4) Divide
-  MSG
-
-  print_prompt(operator_prompt)
+  print_prompt(messages('operator_prompt'))
 
   operator = nil
   loop do
