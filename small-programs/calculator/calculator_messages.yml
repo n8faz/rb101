@@ -17,3 +17,7 @@ en:
   result: "The result is"
   again?: "Do you want to perform another calculation? (Y to calculate again)"
   thanks: "Thank you for using the calculator. Good bye!"
+  adding: "Adding"
+  subtracting: "Subtracting"
+  multiplying: "Multiplying"
+  dividing: "Dividing"

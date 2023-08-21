@@ -29,13 +29,13 @@ end
 def operation_to_message(op)
   operation = case op
                 when '1'
-                  'Adding'
+                  messages('adding')
                 when '2'
-                  'Subtracting'
+                  messages('subtracting')
                 when '3'
-                  'Mulitplying'
+                  messages('mulitplying')
                 when '4'
-                  'Dividing'
+                  messages('dividing')
               end
               
   operation
