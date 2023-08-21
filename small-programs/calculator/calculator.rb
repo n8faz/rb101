@@ -4,8 +4,13 @@
 # display the result
 require 'yaml'
 MESSAGES = YAML.load_file('calculator_messages.yml')
+LANGUAGE = 'en'
 
-def prompt(message)
+def messages(message, lang='en')
+  MESSAGES[lang][message]
+end
+
+def print_prompt(message)
   puts "=> #{message}"
 end
 
@@ -36,42 +41,42 @@ def operation_to_message(op)
   operation
 end
 
-prompt(MESSAGES['welcome'])
+print_prompt(messages('welcome'))
 name = nil
 loop do
   name = gets.chomp
 
   if name.empty?
-    prompt(MESSAGES['valid_name'])
+    print_prompt(messages('valid_name'))
   else
     break
   end
 end
 
-prompt(MESSAGES['hi'] + "#{name}!")
+print_prompt(messages('hi') + "#{name}!")
 
 loop do # main loop
   number1 = nil
   loop do
-    prompt(MESSAGES['first_number?'])
+    print_prompt(messages('first_number?'))
     number1 = gets.chomp
 
     if number?(number1)
       break
     else
-      prompt(MESSAGES['invalid_number'])
+      print_prompt(messages('invalid_number'))
     end
   end
 
   number2 = nil
   loop do
-    prompt(MESSAGES['second_number?'])
+    print_prompt(messages('second_number?'))
     number2 = gets.chomp
 
     if number?(number2)
       break
     else
-      prompt(MESSAGES['invalid_number'])
+      print_prompt(messages('invalid_number'))
     end
   end
 
@@ -83,7 +88,7 @@ loop do # main loop
   4) Divide
   MSG
 
-  prompt(operator_prompt)
+  print_prompt(operator_prompt)
 
   operator = nil
   loop do
@@ -92,11 +97,11 @@ loop do # main loop
     if %w(1 2 3 4).include?(operator)
       break
     else
-      prompt(MESSAGES['must_choose'])
+      print_prompt(messages('must_choose'))
     end
   end
 
-  prompt("#{operation_to_message(operator)} " + MESSAGES['calculating'])
+  print_prompt("#{operation_to_message(operator)} " + messages('calculating'))
 
   result =  case operator
             when '1'
@@ -108,11 +113,11 @@ loop do # main loop
             when '4'
               number1.to_f / number2.to_f
             end
-  prompt(MESSAGES['result'] + " #{result}")
+  print_prompt(messages('result') + " #{result}")
 
-  prompt(MESSAGES['again?'])
+  print_prompt(messages('again?'))
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
 end
 
-prompt(MESSAGES['thanks'])
+print_prompt(messages('thanks'))

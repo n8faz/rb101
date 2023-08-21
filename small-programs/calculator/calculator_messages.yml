@@ -1,18 +1,19 @@
-welcome: "Welcome to Calculator! Enter your name:"
-valid_name: "Make sure to use a valid name."
-hi: "Hi, "
-first_number?: "What's the first number?"
-invalid_number: "Hmm... that doesn't look like a valid number"
-second_number?: "What's the second number?"
-operator_prompt: <<-MSG
-  What operation would you like to perform?
-  1) Add
-  2) Subtract
-  3) Multiply
-  4) Divide
-  MSG
-must_choose: "Must choose 1, 2, 3, or 4"
-calculating: "the two numbers..."
-result: "The result is"
-again?: "Do you want to perform another calculation? (Y to calculate again)"
-thanks: "Thank you for using the calculator. Good bye!"
+en:
+  welcome: "Welcome to Calculator! Enter your name:"
+  valid_name: "Make sure to use a valid name."
+  hi: "Hi, "
+  first_number?: "What's the first number?"
+  invalid_number: "Hmm... that doesn't look like a valid number"
+  second_number?: "What's the second number?"
+  operator_prompt: <<-MSG
+    What operation would you like to perform?
+    1) Add
+    2) Subtract
+    3) Multiply
+    4) Divide
+    MSG
+  must_choose: "Must choose 1, 2, 3, or 4"
+  calculating: "the two numbers..."
+  result: "The result is"
+  again?: "Do you want to perform another calculation? (Y to calculate again)"
+  thanks: "Thank you for using the calculator. Good bye!"
