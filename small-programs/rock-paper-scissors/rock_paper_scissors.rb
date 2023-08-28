@@ -43,7 +43,7 @@ def keep_score(player, computer, player_score, computer_score)
   elsif win?(computer, player)
     computer_score += 1
   end
-  prompt("The score is: You: #{player_score} Computer: #{computer_score}")
+  [player_score, computer_score]
 end
 
 def display_score(player, computer, player_score, computer_score)
@@ -52,28 +52,34 @@ end
 
 
 loop do # main loop
-  choice = nil
-  loop do
-    prompt("Choose one: #{VALID_CHOICES.join(', ')}")
-    choice = gets.chomp
-    choice = abbreviation(choice)
-    if VALID_CHOICES.include?(choice)
-      break
-    else
-      prompt("That's not a valid choice.")
+  player_score = 0
+  computer_score = 0
+  
+  loop do #score loop 
+    choice = nil
+
+    loop do
+      prompt("Choose one: #{VALID_CHOICES.join(', ')}")
+      choice = gets.chomp
+      choice = abbreviation(choice)
+      if VALID_CHOICES.include?(choice)
+        break
+      else
+        prompt("That's not a valid choice.")
+      end
     end
+
+    computer_choice = VALID_CHOICES.sample
+
+    prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
+
+    display_results(choice, computer_choice)
+
+    player_score, computer_score = keep_score(choice, computer_choice, player_score, computer_score)
+    prompt("The score is: You: #{player_score} Computer: #{computer_score}")
+
+    break if player_score == 3 || computer_score == 3
   end
-
-  computer_choice = VALID_CHOICES.sample
-
-  prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
-
-  display_results(choice, computer_choice)
-
-  player_wins = 0
-  computer_wins = 0
-  keep_score(choice, computer_choice, player_wins, computer_wins)
-
   prompt("Do you want to play again?")
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
