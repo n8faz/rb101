@@ -37,6 +37,20 @@ def display_results(player, computer)
   end
 end
 
+def keep_score(player, computer, player_score, computer_score)
+  if win?(player, computer)
+    player_score += 1
+  elsif win?(computer, player)
+    computer_score += 1
+  end
+  prompt("The score is: You: #{player_score} Computer: #{computer_score}")
+end
+
+def display_score(player, computer, player_score, computer_score)
+  keep_score(player, computer, player_score, computer_score)
+end
+
+
 loop do # main loop
   choice = nil
   loop do
@@ -55,6 +69,10 @@ loop do # main loop
   prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
 
   display_results(choice, computer_choice)
+
+  player_wins = 0
+  computer_wins = 0
+  keep_score(choice, computer_choice, player_wins, computer_wins)
 
   prompt("Do you want to play again?")
   answer = gets.chomp
