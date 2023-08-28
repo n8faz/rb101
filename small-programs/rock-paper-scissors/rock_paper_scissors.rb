@@ -1,7 +1,17 @@
 VALID_CHOICES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
+VALID_ABBREVIATIONS = {'r' => 'rock',
+                       'p' => 'paper', 
+                       'sc' => 'scissors', 
+                       'l' => 'lizard', 
+                       'sp' => 'spock'
+                      }
 
 def prompt(message)
   puts "=> #{message}"
+end
+
+def abbreviation(user_choice)
+  VALID_ABBREVIATIONS[user_choice] 
 end
 
 def win?(first, second)
@@ -32,6 +42,7 @@ loop do # main loop
   loop do
     prompt("Choose one: #{VALID_CHOICES.join(', ')}")
     choice = gets.chomp
+    choice = abbreviation(choice)
     if VALID_CHOICES.include?(choice)
       break
     else
