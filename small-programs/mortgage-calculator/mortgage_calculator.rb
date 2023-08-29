@@ -27,17 +27,22 @@ def valid_number?(num)
   number?(num) || positive_number?(num)
 end
 
+def name_loop(name)
+  name = nil
+  loop do
+    name = gets.chomp
+    if name.empty?
+      prompt(MESSAGES['valid_name'])
+    else
+      break
+    end
+  end
+  name
+end
+
 prompt(MESSAGES['welcome'])
 
-name = nil
-loop do # name loop
-  name = gets.chomp
-  if name.empty?
-    prompt(MESSAGES['valid_name'])
-  else
-    break
-  end
-end
+name = name_loop(name)
 
 info = <<-MSG
 Hello, #{name}!
