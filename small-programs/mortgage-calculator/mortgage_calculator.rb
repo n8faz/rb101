@@ -2,8 +2,24 @@ def prompt(message)
   puts "=> #{message}"
 end
 
-def negative_number?(num)
-  num.to_i < 0
+def float?(num)
+  num.to_f.to_s == num
+end
+
+def integer?(num)
+  num.to_i.to_s == num 
+end
+
+def number?(num)
+  integer?(num) || float?(num)
+end
+
+def positive_number?(num)
+  num.to_i > 0
+end
+
+def valid_number?(num)
+  number?(num) || positive_number?(num)
 end
 
 prompt("Welcome to Mortgage Calculator. What is your name?")
@@ -18,17 +34,31 @@ loop do # name loop
   end
 end
 
+welcome = <<-MSG
+This tool will calculate the following:
+1) Monthly Interest Rate
+2) Loan Duration in Months
+3) Monthly Payment
+
+You will need to provide:
+1) The Loan Amount
+2) The Annual Percentage Rate (APR)
+3) The Loan Duration
+
+MSG
+
 prompt("Hello, #{name}!")
+prompt(welcome)
 
 loop do # main loop
   loan_amount = nil
   loop do # loan amount loop
     prompt("Enter your loan amount:")
     loan_amount = gets.chomp
-    if negative_number?(loan_amount)
+    if valid_number?(loan_amount)
+      break  
+    else 
       prompt("That isn't a valid loan amount")
-    else
-      break
     end
   end
 
@@ -36,10 +66,10 @@ loop do # main loop
   loop do # APR loop
     prompt("Enter your APR (Annual Percentage Rate):")
     apr = gets.chomp
-    if negative_number?(apr)
-      prompt("That isn't a valid APR.")
-    else
+    if valid_number?(apr)
       break
+    else 
+      prompt("That isn't a valid APR.")
     end
   end
 
@@ -47,10 +77,10 @@ loop do # main loop
   loop do # loan duration loop
     prompt("Enter the duration of your loan in months:")
     loan_duration = gets.chomp
-    if negative_number?(loan_duration)
-      prompt("That isn't a valid loan duration.")
-    else
+    if valid_number?(loan_duration)
       break
+    else 
+      prompt("That isn't a valid loan duration.")
     end
   end
 
