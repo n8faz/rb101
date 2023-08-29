@@ -50,9 +50,9 @@ You will need to provide:
 MSG
 
 prompt("Hello, #{name}!")
-prompt(welcome)
 
 loop do # main loop
+  prompt(welcome)
   loan_amount = nil
   loop do # loan amount loop
     prompt("Enter your loan amount:")
