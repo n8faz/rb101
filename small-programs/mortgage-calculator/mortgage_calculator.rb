@@ -59,7 +59,7 @@ loop do # main loop
   loan_amount = nil
   loop do # loan amount loop
     prompt(MESSAGES['loan_amount'])
-    loan_amount = gets.chomp
+    loan_amount = gets.chomp.gsub(',', '').gsub('$', '')
     if valid_number?(loan_amount)
       break  
     else 
@@ -95,8 +95,6 @@ loop do # main loop
   apr = apr.to_f
   apr *= 0.01
   monthly_interest = apr / MONTHS_IN_YEAR
-
-  #loan_duration = loan_duration.to_i
 
   prompt(MESSAGES['calculating'])
 
