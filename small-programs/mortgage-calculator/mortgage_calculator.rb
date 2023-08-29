@@ -1,3 +1,5 @@
+MONTHS_IN_YEAR = 12
+
 def prompt(message)
   puts "=> #{message}"
 end
@@ -73,35 +75,38 @@ loop do # main loop
     end
   end
 
-  loan_duration = nil
+  duration_in_months = nil
   loop do # loan duration loop
-    prompt("Enter the duration of your loan in months:")
+    prompt("Enter the duration of your loan:")
     loan_duration = gets.chomp
     if valid_number?(loan_duration)
+      duration_in_months = loan_duration.to_f * MONTHS_IN_YEAR
       break
     else 
       prompt("That isn't a valid loan duration.")
     end
+    duration_in_months
   end
 
   loan_amount = loan_amount.to_i
   apr = apr.to_f
   apr *= 0.01
-  monthly_interest = apr / 12
+  monthly_interest = apr / MONTHS_IN_YEAR
 
-  loan_duration = loan_duration.to_i
+  #loan_duration = loan_duration.to_i
 
   prompt("Calculating your monthly payment...")
 
   monthly_payment = loan_amount *
                     (monthly_interest /
-                    (1 - (1 + monthly_interest)**(-loan_duration)))
+                    (1 - (1 + monthly_interest)**(-duration_in_months)))
   monthly_payment = monthly_payment.round(2)
   prompt("Your monthly payment is $#{monthly_payment}")
 
   prompt("Would you like to run that again? (Y to run again)")
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
+  system "clear"
 end
 
 prompt("Thank you for using the mortgage calculator. See ya!")
