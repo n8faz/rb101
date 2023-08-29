@@ -36,7 +36,7 @@ loop do # name loop
   end
 end
 
-welcome = <<-MSG
+info = <<-MSG
 This tool will calculate the following:
 1) Monthly Interest Rate
 2) Loan Duration in Months
@@ -52,7 +52,7 @@ MSG
 prompt("Hello, #{name}!")
 
 loop do # main loop
-  prompt(welcome)
+  prompt(info)
   loan_amount = nil
   loop do # loan amount loop
     prompt("Enter your loan amount:")
