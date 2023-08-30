@@ -108,7 +108,7 @@ name = name_loop
 info = <<-MSG
 Hello, #{name}!
 
-This tool will calculate the following:
+This Mortgage Calculator will calculate the following:
 1) Monthly Interest Rate
 2) Loan Duration in Months
 3) Monthly Payment
