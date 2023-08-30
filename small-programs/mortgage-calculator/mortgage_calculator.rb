@@ -71,10 +71,15 @@ end
 def loan_duration_loop
   duration_in_months = nil
   loop do
+    prompt(MESSAGES['month_or_year?'])
+    unit = gets.chomp
     prompt(MESSAGES['loan_duration'])
     loan_duration = gets.chomp
-    if valid_number?(loan_duration)
+    if valid_number?(loan_duration) && unit.downcase.start_with?('y')
       duration_in_months = loan_duration.to_f * MONTHS_IN_YEAR
+      break
+    elsif valid_number?(loan_duration) && unit.downcase.start_with?('m')
+      duration_in_months = loan_duration.to_i
       break
     else 
       prompt(MESSAGES['invalid_duration'])
