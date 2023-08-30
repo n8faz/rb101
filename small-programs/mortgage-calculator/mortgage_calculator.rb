@@ -27,7 +27,7 @@ def valid_number?(num)
   number?(num) && positive_or_zero?(num)
 end
 
-def name_loop(name)
+def name_loop
   name = nil
   loop do
     name = gets.chomp
@@ -40,7 +40,7 @@ def name_loop(name)
   name
 end
 
-def loan_amount_loop(loan_amount)
+def loan_amount_loop
   loan_amount = nil
   loop do
     prompt(MESSAGES['loan_amount'])
@@ -54,7 +54,7 @@ def loan_amount_loop(loan_amount)
   loan_amount.to_i
 end
 
-def apr_loop(apr)
+def apr_loop
   apr = nil
   loop do
     prompt(MESSAGES['apr'])
@@ -68,7 +68,7 @@ def apr_loop(apr)
   apr.to_f
 end
 
-def loan_duration_loop(loan_duration)
+def loan_duration_loop
   duration_in_months = nil
   loop do
     prompt(MESSAGES['loan_duration'])
@@ -90,16 +90,20 @@ def monthly_interest(apr)
 end
 
 def monthly_payment(loan_amount, monthly_interest, duration_in_months)
-  monthly_payment = loan_amount *
-                    (monthly_interest /
-                    (1 - (1 + monthly_interest)**(-duration_in_months)))          
+  if monthly_interest == 0 
+    monthly_payment = loan_amount / duration_in_months
+  else 
+    monthly_payment = loan_amount *
+                      (monthly_interest /
+                      (1 - (1 + monthly_interest)**(-duration_in_months)))    
+  end      
   monthly_payment = monthly_payment.round(2)
   monthly_payment
 end
 
 prompt(MESSAGES['welcome'])
 
-name = name_loop(name)
+name = name_loop
 
 info = <<-MSG
 Hello, #{name}!
@@ -118,15 +122,15 @@ MSG
 
 loop do # main loop
   prompt(info)
-  loan_amount = loan_amount_loop(loan_amount)
-  apr = apr_loop(apr)
-  duration_in_months = loan_duration_loop(duration_in_months)
+  loan_amount = loan_amount_loop
+  apr = apr_loop
+  duration_in_months = loan_duration_loop
   monthly_interest = monthly_interest(apr)
-  
+
   prompt(MESSAGES['calculating'])
-
+  
   monthly_payment = monthly_payment(loan_amount, monthly_interest, duration_in_months)
-
+  
   prompt(MESSAGES['monthly_payment'] + "$#{monthly_payment}")
 
   prompt(MESSAGES['again?'])
