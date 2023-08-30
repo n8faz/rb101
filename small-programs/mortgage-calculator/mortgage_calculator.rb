@@ -106,6 +106,12 @@ def monthly_payment(loan_amount, monthly_interest, duration_in_months)
   monthly_payment
 end
 
+def interest_paid(loan_amount, monthly_payment, duration_in_months)
+  total_interest = (monthly_payment * duration_in_months) - loan_amount
+  total_interest = total_interest.round(2)
+  total_interest
+end
+
 prompt(MESSAGES['welcome'])
 
 name = name_loop
@@ -135,8 +141,10 @@ loop do # main loop
   prompt(MESSAGES['calculating'])
   
   monthly_payment = monthly_payment(loan_amount, monthly_interest, duration_in_months)
-  
   prompt(MESSAGES['monthly_payment'] + "$#{monthly_payment}")
+
+  total_interest = interest_paid(loan_amount, monthly_payment, duration_in_months)
+  prompt(MESSAGES['total_interest_paid']+ "$#{total_interest}")
 
   prompt(MESSAGES['again?'])
   answer = gets.chomp
