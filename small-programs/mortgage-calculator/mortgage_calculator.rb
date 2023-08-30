@@ -51,7 +51,7 @@ def loan_amount_loop(loan_amount)
       prompt(MESSAGES['invalid_amount'])
     end
   end
-  loan_amount
+  loan_amount.to_i
 end
 
 def apr_loop(apr)
@@ -65,7 +65,7 @@ def apr_loop(apr)
       prompt(MESSAGES['invalid_apr'])
     end
   end
-  apr
+  apr.to_f
 end
 
 def loan_duration_loop(loan_duration)
@@ -81,6 +81,20 @@ def loan_duration_loop(loan_duration)
     end
   end
   duration_in_months
+end
+
+def monthly_interest(apr)
+  apr *= 0.01
+  monthly_interest = apr / MONTHS_IN_YEAR
+  monthly_interest
+end
+
+def monthly_payment(loan_amount, monthly_interest, duration_in_months)
+  monthly_payment = loan_amount *
+                    (monthly_interest /
+                    (1 - (1 + monthly_interest)**(-duration_in_months)))          
+  monthly_payment = monthly_payment.round(2)
+  monthly_payment
 end
 
 prompt(MESSAGES['welcome'])
@@ -107,19 +121,12 @@ loop do # main loop
   loan_amount = loan_amount_loop(loan_amount)
   apr = apr_loop(apr)
   duration_in_months = loan_duration_loop(duration_in_months)
-
-  loan_amount = loan_amount.to_i
-  apr = apr.to_f
-  apr *= 0.01
-  monthly_interest = apr / MONTHS_IN_YEAR
-
+  monthly_interest = monthly_interest(apr)
+  
   prompt(MESSAGES['calculating'])
 
-  monthly_payment = loan_amount *
-                    (monthly_interest /
-                    (1 - (1 + monthly_interest)**(-duration_in_months)))
-               
-  monthly_payment = monthly_payment.round(2)
+  monthly_payment = monthly_payment(loan_amount, monthly_interest, duration_in_months)
+
   prompt(MESSAGES['monthly_payment'] + "$#{monthly_payment}")
 
   prompt(MESSAGES['again?'])
