@@ -19,12 +19,12 @@ def number?(num)
   integer?(num) || float?(num)
 end
 
-def positive_number?(num)
-  num.to_i > 0
+def positive_or_zero?(num)
+  num.to_i >= 0
 end
 
 def valid_number?(num)
-  number?(num) || positive_number?(num)
+  number?(num) && positive_or_zero?(num)
 end
 
 def name_loop(name)
