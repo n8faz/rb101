@@ -40,6 +40,49 @@ def name_loop(name)
   name
 end
 
+def loan_amount_loop(loan_amount)
+  loan_amount = nil
+  loop do
+    prompt(MESSAGES['loan_amount'])
+    loan_amount = gets.chomp.gsub(',', '').gsub('$', '')
+    if valid_number?(loan_amount)
+      break  
+    else 
+      prompt(MESSAGES['invalid_amount'])
+    end
+  end
+  loan_amount
+end
+
+def apr_loop(apr)
+  apr = nil
+  loop do
+    prompt(MESSAGES['apr'])
+    apr = gets.chomp
+    if valid_number?(apr)
+      break
+    else 
+      prompt(MESSAGES['invalid_apr'])
+    end
+  end
+  apr
+end
+
+def loan_duration_loop(loan_duration)
+  duration_in_months = nil
+  loop do
+    prompt(MESSAGES['loan_duration'])
+    loan_duration = gets.chomp
+    if valid_number?(loan_duration)
+      duration_in_months = loan_duration.to_f * MONTHS_IN_YEAR
+      break
+    else 
+      prompt(MESSAGES['invalid_duration'])
+    end
+  end
+  duration_in_months
+end
+
 prompt(MESSAGES['welcome'])
 
 name = name_loop(name)
@@ -61,40 +104,9 @@ MSG
 
 loop do # main loop
   prompt(info)
-  loan_amount = nil
-  loop do # loan amount loop
-    prompt(MESSAGES['loan_amount'])
-    loan_amount = gets.chomp.gsub(',', '').gsub('$', '')
-    if valid_number?(loan_amount)
-      break  
-    else 
-      prompt(MESSAGES['invalid_amount'])
-    end
-  end
-
-  apr = nil
-  loop do # APR loop
-    prompt(MESSAGES['apr'])
-    apr = gets.chomp
-    if valid_number?(apr)
-      break
-    else 
-      prompt(MESSAGES['invalid_apr'])
-    end
-  end
-
-  duration_in_months = nil
-  loop do # loan duration loop
-    prompt(MESSAGES['loan_duration'])
-    loan_duration = gets.chomp
-    if valid_number?(loan_duration)
-      duration_in_months = loan_duration.to_f * MONTHS_IN_YEAR
-      break
-    else 
-      prompt(MESSAGES['invalid_duration'])
-    end
-    duration_in_months
-  end
+  loan_amount = loan_amount_loop(loan_amount)
+  apr = apr_loop(apr)
+  duration_in_months = loan_duration_loop(duration_in_months)
 
   loan_amount = loan_amount.to_i
   apr = apr.to_f
@@ -106,6 +118,7 @@ loop do # main loop
   monthly_payment = loan_amount *
                     (monthly_interest /
                     (1 - (1 + monthly_interest)**(-duration_in_months)))
+               
   monthly_payment = monthly_payment.round(2)
   prompt(MESSAGES['monthly_payment'] + "$#{monthly_payment}")
 
