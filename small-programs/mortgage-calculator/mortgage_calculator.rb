@@ -149,11 +149,31 @@ def calculate_interest_paid(loan_amount, monthly_payment, duration_in_months)
   total_interest
 end
 
-def print_calculations(monthly_interest, duration_in_months, monthly_payment, total_interest)
+def print_monthly_interest(monthly_interest)
   arrow_prompt(MESSAGES['monthly_interest'] + "#{monthly_interest.round(4)}")
-  arrow_prompt(MESSAGES['duration_in_months'] + "#{duration_in_months.to_i} months")
-  arrow_prompt(MESSAGES['monthly_payment'] + "$#{monthly_payment}")
-  arrow_prompt(MESSAGES['total_interest_paid'] + "$#{total_interest}")
+end
+
+def print_duration_in_months(duration_in_months)
+    arrow_prompt(MESSAGES['duration_in_months'] + "#{duration_in_months.to_i} months")
+end
+
+def print_monthly_payment(monthly_payment)
+  arrow_prompt(MESSAGES['monthly_payment'] + "$#{format('%.2f', monthly_payment)}")
+end
+
+def print_interest_paid(monthly_interest, total_interest)
+  if monthly_interest == 0
+    arrow_prompt(MESSAGES['congrats'])
+  else 
+    arrow_prompt(MESSAGES['total_interest_paid'] + "$#{total_interest}")
+  end
+end
+
+def print_calculations(monthly_interest, duration_in_months, monthly_payment, total_interest)
+  print_monthly_interest(monthly_interest)
+  print_duration_in_months(duration_in_months)
+  print_monthly_payment(monthly_payment)
+  print_interest_paid(monthly_interest, total_interest)
   no_arrow_prompt(MESSAGES['space'])
 end
 
