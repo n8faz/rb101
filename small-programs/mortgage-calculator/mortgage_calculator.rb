@@ -123,16 +123,15 @@ end
 
 def calculate_monthly_interest(apr)
   apr *= 0.01
-  monthly_interest = apr / MONTHS_IN_YEAR
-  monthly_interest
+  apr / MONTHS_IN_YEAR
 end
 
 def calculate_monthly_payment(loan_amount, monthly_interest, duration_in_months)
   if monthly_interest == 0
     monthly_payment = loan_amount / duration_in_months
   else
-    monthly_payment = loan_amount * 
-                      (monthly_interest / 
+    monthly_payment = loan_amount *
+                      (monthly_interest /
                       (1 - ((1 + monthly_interest)**(-duration_in_months))))
   end
   monthly_payment.round(2)
@@ -150,7 +149,7 @@ def print_calculating
 end
 
 def print_monthly_interest(monthly_interest)
-  arrow_prompt(messages('monthly_interest') + "#{monthly_interest.round(4)}")
+  arrow_prompt(messages('monthly_interest') + monthly_interest.round(4).to_s)
 end
 
 def print_duration_in_months(duration_in_months)
