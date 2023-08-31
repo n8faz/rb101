@@ -78,7 +78,7 @@ def get_apr
   apr = nil
   loop do
     arrow_prompt(MESSAGES['apr'])
-    apr = gets.chomp
+    apr = gets.chomp.delete("%")
     if valid_number?(apr) || apr.to_f == 0
       break
     else 
@@ -165,7 +165,7 @@ def print_interest_paid(monthly_interest, total_interest)
   if monthly_interest == 0
     arrow_prompt(MESSAGES['congrats'])
   else 
-    arrow_prompt(MESSAGES['total_interest_paid'] + "$#{total_interest}")
+    arrow_prompt(MESSAGES['total_interest_paid'] + "$#{format('%.2f', total_interest)}")
   end
 end
 
@@ -176,6 +176,8 @@ def print_calculations(monthly_interest, duration_in_months, monthly_payment, to
   print_interest_paid(monthly_interest, total_interest)
   no_arrow_prompt(MESSAGES['space'])
 end
+
+#Program start
 
 clear_screen
 
