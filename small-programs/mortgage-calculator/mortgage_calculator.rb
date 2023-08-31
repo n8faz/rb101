@@ -68,7 +68,7 @@ def get_loan_amount
       arrow_prompt_yaml('invalid_amount')
     end
   end
-  loan_amount.to_i
+  loan_amount.to_f
 end
 
 def get_apr
@@ -126,7 +126,9 @@ def calculate_monthly_interest(apr)
   apr / MONTHS_IN_YEAR
 end
 
-def calculate_monthly_payment(loan_amount, monthly_interest, duration_in_months)
+def calculate_monthly_payment(loan_amount,
+                              monthly_interest,
+                              duration_in_months)
   if monthly_interest == 0
     monthly_payment = loan_amount / duration_in_months
   else
@@ -137,7 +139,9 @@ def calculate_monthly_payment(loan_amount, monthly_interest, duration_in_months)
   monthly_payment.round(2)
 end
 
-def calculate_interest_paid(loan_amount, monthly_payment, duration_in_months)
+def calculate_interest_paid(loan_amount,
+                            monthly_payment,
+                            duration_in_months)
   total_interest = (monthly_payment * duration_in_months) - loan_amount
   total_interest.round(2)
 end
@@ -223,7 +227,6 @@ loop do # main loop
   monthly_payment = calculate_monthly_payment(loan_amount,
                                               monthly_interest,
                                               duration_in_months)
-
   total_interest = calculate_interest_paid(loan_amount,
                                            monthly_payment,
                                            duration_in_months)
