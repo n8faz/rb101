@@ -74,12 +74,12 @@ def get_loan_amount
   loan_amount.to_i
 end
 
-def get_apr_loop
+def get_apr
   apr = nil
   loop do
     arrow_prompt(MESSAGES['apr'])
     apr = gets.chomp
-    if valid_number?(apr)
+    if valid_number?(apr) || apr.to_f == 0
       break
     else 
       arrow_prompt(MESSAGES['invalid_apr'])
@@ -88,18 +88,35 @@ def get_apr_loop
   apr.to_f
 end
 
-def get_loan_duration
-  duration_in_months = nil
-  loop do
+def month_or_year?
+  unit = nil 
+  loop do 
     arrow_prompt(MESSAGES['month_or_year?'])
     unit = gets.chomp
+    if unit.downcase.start_with?('y')
+      unit = 'year'
+      break
+    elsif unit.downcase.start_with?('m')
+      unit = 'month'
+      break
+    else
+      arrow_prompt(MESSAGES['invalid_month_or_year'])
+    end
+  end
+  unit 
+end
+
+def get_loan_duration
+  duration_in_months = nil
+  unit = month_or_year?
+  loop do
     arrow_prompt(MESSAGES['loan_duration'])
     loan_duration = gets.chomp
-    if valid_number?(loan_duration) && unit.downcase.start_with?('y')
+    if valid_number?(loan_duration) && unit == 'year'
       duration_in_months = loan_duration.to_f * MONTHS_IN_YEAR
       break
-    elsif valid_number?(loan_duration) && unit.downcase.start_with?('m')
-      duration_in_months = loan_duration.to_i
+    elsif valid_number?(loan_duration) && unit == 'month'
+      duration_in_months = loan_duration.to_f
       break
     else 
       arrow_prompt(MESSAGES['invalid_duration'])
@@ -132,6 +149,14 @@ def calculate_interest_paid(loan_amount, monthly_payment, duration_in_months)
   total_interest
 end
 
+def print_calculations(monthly_interest, duration_in_months, monthly_payment, total_interest)
+  arrow_prompt(MESSAGES['monthly_interest'] + "#{monthly_interest.round(4)}")
+  arrow_prompt(MESSAGES['duration_in_months'] + "#{duration_in_months.to_i} months")
+  arrow_prompt(MESSAGES['monthly_payment'] + "$#{monthly_payment}")
+  arrow_prompt(MESSAGES['total_interest_paid'] + "$#{total_interest}")
+  no_arrow_prompt(MESSAGES['space'])
+end
+
 clear_screen
 
 arrow_prompt(MESSAGES['welcome'])
@@ -145,6 +170,7 @@ This Mortgage Calculator will calculate the following:
 1) Monthly Interest Rate
 2) Loan Duration in Months
 3) Monthly Payment
+4) Total Interest Paid
 
 You will need to provide:
 1) The Loan Amount
@@ -155,22 +181,20 @@ MSG
 
 loop do # main loop
   arrow_prompt(info)
+
   loan_amount = get_loan_amount
   apr = get_apr
   duration_in_months = get_loan_duration
   monthly_interest = calculate_monthly_interest(apr)
+  monthly_payment = calculate_monthly_payment(loan_amount, monthly_interest, duration_in_months)
+  total_interest = calculate_interest_paid(loan_amount, monthly_payment, duration_in_months)
 
   print_calculating
-  
-  monthly_payment = calculate_monthly_payment(loan_amount, monthly_interest, duration_in_months)
-  arrow_prompt(MESSAGES['monthly_payment'] + "$#{monthly_payment}")
-
-  total_interest = calculate_interest_paid(loan_amount, monthly_payment, duration_in_months)
-  arrow_prompt(MESSAGES['total_interest_paid']+ "$#{total_interest}")
+  print_calculations(monthly_interest, duration_in_months, monthly_payment, total_interest)
 
   break unless run_again?
 
   clear_screen
 end
 
-arrow_prompt(MESSAGES['thanks'])
+arrow_prompt( MESSAGES['thanks'] + "#{name}!" )
