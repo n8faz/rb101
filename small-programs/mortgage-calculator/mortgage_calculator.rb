@@ -12,7 +12,7 @@ def arrow_prompt(message)
 end
 
 def no_arrow_prompt(message)
-  puts "#{message}"
+  puts message
 end
 
 def print_calculating
@@ -139,14 +139,12 @@ def calculate_monthly_payment(loan_amount, monthly_interest, duration_in_months)
                       (monthly_interest /
                       (1 - (1 + monthly_interest)**(-duration_in_months)))
   end
-  monthly_payment = monthly_payment.round(2)
-  monthly_payment
+  monthly_payment.round(2)
 end
 
 def calculate_interest_paid(loan_amount, monthly_payment, duration_in_months)
   total_interest = (monthly_payment * duration_in_months) - loan_amount
-  total_interest = total_interest.round(2)
-  total_interest
+  total_interest.round(2)
 end
 
 def print_monthly_interest(monthly_interest)
