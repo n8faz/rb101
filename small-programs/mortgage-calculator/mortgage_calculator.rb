@@ -3,8 +3,28 @@ MESSAGES = YAML.load_file('mortgage_calculator_messages.yml')
 
 MONTHS_IN_YEAR = 12
 
-def prompt(message)
+def clear_screen
+  system "clear"
+end
+
+def arrow_prompt(message)
   puts "=> #{message}"
+end
+
+def no_arrow_prompt(message)
+  puts "#{message}"
+end 
+
+def print_calculating
+  arrow_prompt(MESSAGES['calculating'])
+  sleep 2
+  no_arrow_prompt(MESSAGES['space'])
+end
+
+def run_again?
+  arrow_prompt(MESSAGES['again?'])
+  answer = gets.chomp
+  answer.downcase.start_with?('y')
 end
 
 def float?(num)
@@ -19,20 +39,20 @@ def number?(num)
   integer?(num) || float?(num)
 end
 
-def positive_or_zero?(num)
-  num.to_i >= 0
+def positive_number?(num)
+  num.to_i > 0
 end
 
 def valid_number?(num)
-  number?(num) && positive_or_zero?(num)
+  number?(num) && positive_number?(num)
 end
 
-def name_loop
+def get_name
   name = nil
   loop do
     name = gets.chomp
     if name.empty?
-      prompt(MESSAGES['valid_name'])
+      arrow_prompt(MESSAGES['valid_name'])
     else
       break
     end
@@ -40,40 +60,40 @@ def name_loop
   name
 end
 
-def loan_amount_loop
+def get_loan_amount
   loan_amount = nil
   loop do
-    prompt(MESSAGES['loan_amount'])
+    arrow_prompt(MESSAGES['loan_amount'])
     loan_amount = gets.chomp.gsub(',', '').gsub('$', '')
     if valid_number?(loan_amount)
       break  
     else 
-      prompt(MESSAGES['invalid_amount'])
+      arrow_prompt(MESSAGES['invalid_amount'])
     end
   end
   loan_amount.to_i
 end
 
-def apr_loop
+def get_apr_loop
   apr = nil
   loop do
-    prompt(MESSAGES['apr'])
+    arrow_prompt(MESSAGES['apr'])
     apr = gets.chomp
     if valid_number?(apr)
       break
     else 
-      prompt(MESSAGES['invalid_apr'])
+      arrow_prompt(MESSAGES['invalid_apr'])
     end
   end
   apr.to_f
 end
 
-def loan_duration_loop
+def get_loan_duration
   duration_in_months = nil
   loop do
-    prompt(MESSAGES['month_or_year?'])
+    arrow_prompt(MESSAGES['month_or_year?'])
     unit = gets.chomp
-    prompt(MESSAGES['loan_duration'])
+    arrow_prompt(MESSAGES['loan_duration'])
     loan_duration = gets.chomp
     if valid_number?(loan_duration) && unit.downcase.start_with?('y')
       duration_in_months = loan_duration.to_f * MONTHS_IN_YEAR
@@ -82,19 +102,19 @@ def loan_duration_loop
       duration_in_months = loan_duration.to_i
       break
     else 
-      prompt(MESSAGES['invalid_duration'])
+      arrow_prompt(MESSAGES['invalid_duration'])
     end
   end
   duration_in_months
 end
 
-def monthly_interest(apr)
+def calculate_monthly_interest(apr)
   apr *= 0.01
   monthly_interest = apr / MONTHS_IN_YEAR
   monthly_interest
 end
 
-def monthly_payment(loan_amount, monthly_interest, duration_in_months)
+def calculate_monthly_payment(loan_amount, monthly_interest, duration_in_months)
   if monthly_interest == 0 
     monthly_payment = loan_amount / duration_in_months
   else 
@@ -106,15 +126,17 @@ def monthly_payment(loan_amount, monthly_interest, duration_in_months)
   monthly_payment
 end
 
-def interest_paid(loan_amount, monthly_payment, duration_in_months)
+def calculate_interest_paid(loan_amount, monthly_payment, duration_in_months)
   total_interest = (monthly_payment * duration_in_months) - loan_amount
   total_interest = total_interest.round(2)
   total_interest
 end
 
-prompt(MESSAGES['welcome'])
+clear_screen
 
-name = name_loop
+arrow_prompt(MESSAGES['welcome'])
+
+name = get_name
 
 info = <<-MSG
 Hello, #{name}!
@@ -132,24 +154,23 @@ You will need to provide:
 MSG
 
 loop do # main loop
-  prompt(info)
-  loan_amount = loan_amount_loop
-  apr = apr_loop
-  duration_in_months = loan_duration_loop
-  monthly_interest = monthly_interest(apr)
+  arrow_prompt(info)
+  loan_amount = get_loan_amount
+  apr = get_apr
+  duration_in_months = get_loan_duration
+  monthly_interest = calculate_monthly_interest(apr)
 
-  prompt(MESSAGES['calculating'])
+  print_calculating
   
-  monthly_payment = monthly_payment(loan_amount, monthly_interest, duration_in_months)
-  prompt(MESSAGES['monthly_payment'] + "$#{monthly_payment}")
+  monthly_payment = calculate_monthly_payment(loan_amount, monthly_interest, duration_in_months)
+  arrow_prompt(MESSAGES['monthly_payment'] + "$#{monthly_payment}")
 
-  total_interest = interest_paid(loan_amount, monthly_payment, duration_in_months)
-  prompt(MESSAGES['total_interest_paid']+ "$#{total_interest}")
+  total_interest = calculate_interest_paid(loan_amount, monthly_payment, duration_in_months)
+  arrow_prompt(MESSAGES['total_interest_paid']+ "$#{total_interest}")
 
-  prompt(MESSAGES['again?'])
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
-  system "clear"
+  break unless run_again?
+
+  clear_screen
 end
 
-prompt(MESSAGES['thanks'])
+arrow_prompt(MESSAGES['thanks'])
