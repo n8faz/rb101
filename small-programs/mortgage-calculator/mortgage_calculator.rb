@@ -186,9 +186,21 @@ def print_calculations(monthly_interest,
 end
 
 def run_again?
-  arrow_prompt_yaml('again?')
-  answer = gets.chomp
-  answer.downcase.start_with?('y')
+  answer = nil
+  loop do 
+    arrow_prompt_yaml('again?')
+    answer = gets.chomp
+    if answer.downcase.start_with?('y')
+      answer = 'yes'
+      break
+    elsif answer.downcase.start_with?('n')
+      answer = 'no'
+      break
+    else
+      arrow_prompt_yaml('again_invalid')
+    end
+  end
+  answer
 end
 
 # Program start
@@ -236,7 +248,7 @@ loop do # main loop
                      monthly_payment,
                      total_interest)
 
-  break unless run_again?
+  break unless run_again? == 'yes'
 
   clear_screen
 end
