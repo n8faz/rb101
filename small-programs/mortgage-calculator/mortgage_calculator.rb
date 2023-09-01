@@ -187,7 +187,7 @@ end
 
 def run_again?
   answer = nil
-  loop do 
+  loop do
     arrow_prompt_yaml('again?')
     answer = gets.chomp
     if answer.downcase.start_with?('y')
