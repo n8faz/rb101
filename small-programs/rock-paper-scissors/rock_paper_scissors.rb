@@ -20,6 +20,21 @@ def abbreviation(user_choice)
   VALID_ABBREVIATIONS[user_choice] 
 end
 
+def get_user_choice
+  choice = nil
+
+    loop do
+      prompt("Choose one: #{VALID_CHOICES.join(', ')}")
+      choice = gets.chomp
+      if VALID_CHOICES.include?(choice)
+        break
+      else
+        prompt("That's not a valid choice.")
+      end
+    end
+  choice
+end
+
 def win?(first, second)
   (first == 'rock'     && second == 'scissors') ||
   (first == 'rock'     && second == 'lizard') ||
@@ -62,26 +77,15 @@ loop do # main loop
   computer_score = 0
   
   loop do #score loop 
-    choice = nil
-
-    loop do
-      prompt("Choose one: #{VALID_CHOICES.join(', ')}")
-      choice = gets.chomp
-      choice = abbreviation(choice)
-      if VALID_CHOICES.include?(choice)
-        break
-      else
-        prompt("That's not a valid choice.")
-      end
-    end
+    user_choice = get_user_choice
 
     computer_choice = VALID_CHOICES.sample
 
-    prompt("You chose: #{choice}; Computer chose: #{computer_choice}")
+    prompt("You chose: #{user_choice}; Computer chose: #{computer_choice}")
 
-    display_results(choice, computer_choice)
+    display_results(user_choice, computer_choice)
 
-    player_score, computer_score = keep_score(choice, computer_choice, player_score, computer_score)
+    player_score, computer_score = keep_score(user_choice, computer_choice, player_score, computer_score)
     prompt("The score is: You: #{player_score} Computer: #{computer_score}")
 
     break if player_score == 3 || computer_score == 3
