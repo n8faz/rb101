@@ -5,6 +5,12 @@ VALID_ABBREVIATIONS = {'r' => 'rock',
                        'l' => 'lizard', 
                        'sp' => 'spock'
                       }
+WIN_CONDITIONS = {'rock' => ['scissors', 'lizard'],
+                  'paper' => ['rock', 'spock'],
+                  'scissors' => ['paper', 'lizard'],
+                  'lizard' => ['paper', 'spock'],
+                  'spock' => ['scissors', 'rock']
+                 }
 
 def prompt(message)
   puts "=> #{message}"
