@@ -22,17 +22,17 @@ end
 
 def get_user_choice
   choice = nil
-
     loop do
       prompt("Choose one: #{VALID_CHOICES.join(', ')}")
       choice = gets.chomp
-      if VALID_CHOICES.include?(choice)
-        break
-      else
-        prompt("That's not a valid choice.")
-      end
+      break if VALID_CHOICES.include?(choice)
+      prompt("That's not a valid choice.")
     end
   choice
+end
+
+def get_computer_choice
+  VALID_CHOICES.sample
 end
 
 def win?(first, second)
@@ -78,8 +78,7 @@ loop do # main loop
   
   loop do #score loop 
     user_choice = get_user_choice
-
-    computer_choice = VALID_CHOICES.sample
+    computer_choice = get_computer_choice
 
     prompt("You chose: #{user_choice}; Computer chose: #{computer_choice}")
 
