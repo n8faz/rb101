@@ -76,7 +76,7 @@ def get_apr
   loop do
     arrow_prompt_yaml('apr')
     apr = gets.chomp.delete("%")
-    if valid_number?(apr) || apr.to_i == 0
+    if valid_number?(apr) || apr == '0'
       break
     else
       arrow_prompt_yaml('invalid_apr')
