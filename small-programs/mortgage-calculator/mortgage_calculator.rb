@@ -132,9 +132,8 @@ def calculate_monthly_payment(loan_amount,
   if monthly_interest == 0
     monthly_payment = loan_amount / duration_in_months
   else
-    monthly_payment = loan_amount *
-                      (monthly_interest / 
-                      (1 - ((1 + monthly_interest)**(-duration_in_months))))
+    monthly_payment = loan_duration * (monthly_interest / (1 -
+                      ((1 + monthly_rate)**(-duration_months))))
   end
   monthly_payment.round(2)
 end
