@@ -25,8 +25,14 @@ def get_user_choice
     loop do
       prompt("Choose one: #{VALID_CHOICES.join(', ')}")
       choice = gets.chomp
-      break if VALID_CHOICES.include?(choice)
+      if VALID_CHOICES.include?(choice)
+        break
+      elsif VALID_ABBREVIATIONS.include?(choice)
+        choice = abbreviation(choice)
+        break
+      else
       prompt("That's not a valid choice.")
+      end
     end
   choice
 end
