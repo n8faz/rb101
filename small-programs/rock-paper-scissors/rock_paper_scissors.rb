@@ -138,9 +138,9 @@ end
 
 def display_results(player, computer)
   if win?(player, computer)
-    arrow_prompt(messages('you_won'))
+    arrow_prompt(messages('you_won_round'))
   elsif win?(computer, player)
-    arrow_prompt(messages('computer_won'))
+    arrow_prompt(messages('computer_won_round'))
   else
     arrow_prompt(messages('tie'))
   end
@@ -159,19 +159,22 @@ def keep_score(player,
   [player_score, computer_score]
 end
 
-def display_score(player,
-                  computer,
-                  player_score,
-                  computer_score)
-  keep_score(player,
-             computer,
-             player_score,
-             computer_score)
+def game_over?(player_score, computer_score)
+  if player_score == 3
+    arrow_prompt(messages('player_champion'))
+    true
+  elsif computer_score == 3
+    arrow_prompt(messages('computer_champion'))
+    true
+  else
+    false
+  end
 end
 
 def play_again?
   answer = nil
   loop do
+    no_arrow_prompt(' ')
     arrow_prompt(messages('again?'))
     answer = gets.chomp
     if answer.downcase.start_with?('y')
@@ -216,6 +219,8 @@ Lizard eats Paper,
 Paper disproves Spock, 
 and Spock vaporizes Rock.
 
+The game will be a best of 3. First to win 3 rounds is the Champion!
+
 MSG
 
 play = nil
@@ -250,9 +255,7 @@ loop do #main loop
                                               player_score,
                                               computer_score)
 
-    print_score_tally(player_score, computer_score)
-
-    break if player_score == 3 || computer_score == 3
+    break if game_over?(player_score, computer_score)
   end
 
   break unless play_again? == 'yes'
