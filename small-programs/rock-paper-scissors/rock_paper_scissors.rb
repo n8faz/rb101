@@ -31,6 +31,32 @@ def abbreviation(user_choice)
   VALID_ABBREVIATIONS[user_choice] 
 end
 
+def play?
+  answer = nil
+  loop do
+    prompt(messages('play?'))
+    answer = gets.chomp
+    if answer.downcase.start_with?('y')
+      answer = 'yes'
+      break
+    elsif answer.downcase.start_with?('n')
+      answer = 'no'
+      break
+    else
+      prompt(messages('play_invalid'))
+    end
+  end
+  answer
+end
+
+def which_exit_message?(play, name)
+  if play == 'no'
+    prompt(messages('didnt_play') + "#{name}.")
+  else 
+    prompt(messages('thanks') + "#{name}!")
+  end
+end
+
 def get_name
   name = nil
   loop do
@@ -118,32 +144,36 @@ As I'm sure you are aware; Rock crushes Scissors, Scissors cuts Paper, and Paper
 
 
 MSG
+play = nil
+loop do
+  prompt(info)
+  play = play?
+  break if play == 'no'
 
-prompt(info)
+  loop do # main loop
+    player_score = 0
+    computer_score = 0
 
-loop do # main loop
-  player_score = 0
-  computer_score = 0
+    loop do #score loop 
+      user_choice = get_user_choice
+      computer_choice = get_computer_choice
 
-  loop do #score loop 
-    user_choice = get_user_choice
-    computer_choice = get_computer_choice
+      prompt(messages('you_chose') + user_choice.to_s)
+      prompt(messages('computer_chose') + computer_choice.to_s)
 
-    prompt(messages('you_chose') + user_choice.to_s)
-    prompt(messages('computer_chose') + computer_choice.to_s)
+      display_results(user_choice, computer_choice)
 
-    display_results(user_choice, computer_choice)
+      player_score, computer_score = keep_score(user_choice, computer_choice, player_score, computer_score)
+      prompt(messages('score'))
+      prompt(messages('your_score') + player_score.to_s)
+      prompt(messages('computer_score') + computer_score.to_s)
 
-    player_score, computer_score = keep_score(user_choice, computer_choice, player_score, computer_score)
-    prompt(messages('score'))
-    prompt(messages('your_score') + player_score.to_s)
-    prompt(messages('computer_score') + computer_score.to_s)
-
-    break if player_score == 3 || computer_score == 3
+      break if player_score == 3 || computer_score == 3
+    end
+    prompt(messages('again?'))
+    answer = gets.chomp
+    break unless answer.downcase.start_with?('y')
   end
-  prompt(messages('again?'))
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
 end
+which_exit_message?(play, name)
 
-prompt(messages('thanks'))
