@@ -2,18 +2,16 @@ require 'yaml'
 
 MESSAGES = YAML.load_file('rock_paper_scissors_messages.yml')
 VALID_CHOICES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
-VALID_ABBREVIATIONS = {'r' => 'rock',
-                       'p' => 'paper', 
-                       'sc' => 'scissors', 
-                       'l' => 'lizard', 
-                       'sp' => 'spock'
-                      }
-WIN_CONDITIONS = {'rock' => ['scissors', 'lizard'],
-                  'paper' => ['rock', 'spock'],
-                  'scissors' => ['paper', 'lizard'],
-                  'lizard' => ['paper', 'spock'],
-                  'spock' => ['scissors', 'rock']
-                 }
+VALID_ABBREVIATIONS = { 'r' => 'rock',
+                        'p' => 'paper',
+                        'sc' => 'scissors',
+                        'l' => 'lizard',
+                        'sp' => 'spock' }
+WIN_CONDITIONS = { 'rock' => ['scissors', 'lizard'],
+                   'paper' => ['rock', 'spock'],
+                   'scissors' => ['paper', 'lizard'],
+                   'lizard' => ['paper', 'spock'],
+                   'spock' => ['scissors', 'rock'] }
 
 def clear_screen
   system "clear"
@@ -32,7 +30,7 @@ def no_arrow_prompt(message)
 end
 
 def abbreviation(user_choice)
-  VALID_ABBREVIATIONS[user_choice] 
+  VALID_ABBREVIATIONS[user_choice]
 end
 
 def get_name
@@ -69,7 +67,7 @@ end
 def which_exit_message?(play, name)
   if play == 'no'
     arrow_prompt(messages('didnt_play') + "#{name}.")
-  else 
+  else
     arrow_prompt(messages('thanks') + "#{name}!")
   end
 end
@@ -92,18 +90,18 @@ end
 
 def get_user_choice
   choice = nil
-    loop do
-      arrow_prompt(messages('choose'))
-      choice = gets.chomp.downcase
-      if VALID_CHOICES.include?(choice)
-        break
-      elsif VALID_ABBREVIATIONS.include?(choice)
-        choice = abbreviation(choice)
-        break
-      else
-      arrow_prompt(messages('invalid_choice'))
-      end
+  loop do
+    arrow_prompt(messages('choose'))
+    choice = gets.chomp.downcase
+    if VALID_CHOICES.include?(choice)
+      break
+    elsif VALID_ABBREVIATIONS.include?(choice)
+      choice = abbreviation(choice)
+      break
+    else
+    arrow_prompt(messages('invalid_choice'))
     end
+  end
   choice
 end
 
@@ -196,18 +194,18 @@ This game varies a bit from the traditional Rock, Paper Scissors...
 
 In the traditional game:
 
-Rock crushes Scissors, 
-Scissors cuts Paper, 
+Rock crushes Scissors,
+Scissors cuts Paper,
 and Paper covers Rock.
 
 In this game, you can also choose Lizard or Spock:
 
-Rock crushes Lizard, 
-Lizard poisons Spock, 
-Spock smashes Scissors, 
-Scissors decapitates Lizard, 
-Lizard eats Paper, 
-Paper disproves Spock, 
+Rock crushes Lizard,
+Lizard poisons Spock,
+Spock smashes Scissors,
+Scissors decapitates Lizard,
+Lizard eats Paper,
+Paper disproves Spock,
 and Spock vaporizes Rock.
 
 The game will be a best of 3. First to win 3 rounds is the Champion!
@@ -216,7 +214,7 @@ MSG
 
 play = nil
 
-loop do #main loop
+loop do # main loop
   arrow_prompt(info)
   play = play?
   break if play == 'no'
@@ -227,7 +225,7 @@ loop do #main loop
   computer_score = 0
   current_round = 0
 
-  loop do #score loop 
+  loop do # score loop
     current_round += 1
 
     print_round(current_round)
@@ -251,4 +249,3 @@ loop do #main loop
   break unless play_again? == 'yes'
 end
 which_exit_message?(play, name)
-
