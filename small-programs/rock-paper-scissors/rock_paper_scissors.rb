@@ -35,6 +35,19 @@ def abbreviation(user_choice)
   VALID_ABBREVIATIONS[user_choice] 
 end
 
+def get_name
+  name = nil
+  loop do
+    name = gets.chomp
+    if name.empty? || name.start_with?(' ')
+      arrow_prompt(messages('invalid_name'))
+    else
+      break
+    end
+  end
+  name
+end
+
 def play?
   answer = nil
   loop do
@@ -59,19 +72,6 @@ def which_exit_message?(play, name)
   else 
     arrow_prompt(messages('thanks') + "#{name}!")
   end
-end
-
-def get_name
-  name = nil
-  loop do
-    name = gets.chomp
-    if name.empty? || name.start_with?(' ')
-      arrow_prompt(messages('invalid_name'))
-    else
-      break
-    end
-  end
-  name
 end
 
 def print_start
@@ -144,9 +144,13 @@ def display_results(player, computer)
   else
     arrow_prompt(messages('tie'))
   end
+  no_arrow_prompt(' ')
 end
 
-def keep_score(player, computer, player_score, computer_score)
+def keep_score(player,
+               computer,
+               player_score,
+               computer_score)
   if win?(player, computer)
     player_score += 1
   elsif win?(computer, player)
@@ -155,8 +159,14 @@ def keep_score(player, computer, player_score, computer_score)
   [player_score, computer_score]
 end
 
-def display_score(player, computer, player_score, computer_score)
-  keep_score(player, computer, player_score, computer_score)
+def display_score(player,
+                  computer,
+                  player_score,
+                  computer_score)
+  keep_score(player,
+             computer,
+             player_score,
+             computer_score)
 end
 
 def play_again?
@@ -220,10 +230,13 @@ loop do #main loop
   player_score = 0
   computer_score = 0
   current_round = 0
+
   loop do #score loop 
     current_round += 1
+
     print_round(current_round)
     print_score_tally(player_score, computer_score)
+
     user_choice = get_user_choice
     computer_choice = get_computer_choice
       
@@ -232,7 +245,10 @@ loop do #main loop
 
     display_results(user_choice, computer_choice)
 
-    player_score, computer_score = keep_score(user_choice, computer_choice, player_score, computer_score)
+    player_score, computer_score = keep_score(user_choice,
+                                              computer_choice,
+                                              player_score,
+                                              computer_score)
 
     print_score_tally(player_score, computer_score)
 
