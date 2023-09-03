@@ -124,16 +124,7 @@ def print_choices(user_choice, computer_choice)
 end
 
 def win?(first, second)
-  (first == 'rock'     && second == 'scissors') ||
-  (first == 'rock'     && second == 'lizard') ||
-  (first == 'paper'    && second == 'rock') ||
-  (first == 'paper'    && second == 'spock') ||
-  (first == 'scissors' && second == 'paper') ||
-  (first == 'scissors' && second == 'lizard') ||
-  (first == 'lizard'   && second == 'paper') ||
-  (first == 'lizard'   && second == 'spock') ||
-  (first == 'spock'    && second == 'scissors') ||
-  (first == 'spock'    && second == 'rock')
+  WIN_CONDITIONS[first].include?(second)
 end
 
 def display_results(player, computer)
@@ -247,7 +238,6 @@ loop do #main loop
       
     print_waiting
     print_choices(user_choice, computer_choice)
-
     display_results(user_choice, computer_choice)
 
     player_score, computer_score = keep_score(user_choice,
