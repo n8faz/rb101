@@ -74,6 +74,22 @@ def get_name
   name
 end
 
+def print_start
+  arrow_prompt(messages('start'))
+  sleep 1
+  clear_screen
+end
+
+def print_round(round)
+  arrow_prompt("Round #{round}")
+end
+
+def print_score_tally(player_score, computer_score)
+  arrow_prompt(messages('score'))
+  arrow_prompt(messages('your_score') + player_score.to_s)
+  arrow_prompt(messages('computer_score') + computer_score.to_s)
+end
+
 def get_user_choice
   choice = nil
     loop do
@@ -98,6 +114,12 @@ end
 def print_waiting
   arrow_prompt(messages('waiting'))
   sleep 2
+  no_arrow_prompt(' ')
+end
+
+def print_choices(user_choice, computer_choice)
+  arrow_prompt(messages('you_chose') + user_choice.to_s.capitalize)
+  arrow_prompt(messages('computer_chose') + computer_choice.to_s.capitalize)
   no_arrow_prompt(' ')
 end
 
@@ -188,31 +210,31 @@ MSG
 
 play = nil
 
-loop do
+loop do #main loop
   arrow_prompt(info)
   play = play?
   break if play == 'no'
-  arrow_prompt(messages('start'))
-  no_arrow_prompt(' ')
+
+  print_start
 
   player_score = 0
   computer_score = 0
-
+  current_round = 0
   loop do #score loop 
+    current_round += 1
+    print_round(current_round)
+    print_score_tally(player_score, computer_score)
     user_choice = get_user_choice
     computer_choice = get_computer_choice
       
     print_waiting
-
-    arrow_prompt(messages('you_chose') + user_choice.to_s)
-    arrow_prompt(messages('computer_chose') + computer_choice.to_s)
+    print_choices(user_choice, computer_choice)
 
     display_results(user_choice, computer_choice)
 
     player_score, computer_score = keep_score(user_choice, computer_choice, player_score, computer_score)
-    arrow_prompt(messages('score'))
-    arrow_prompt(messages('your_score') + player_score.to_s)
-    arrow_prompt(messages('computer_score') + computer_score.to_s)
+
+    print_score_tally(player_score, computer_score)
 
     break if player_score == 3 || computer_score == 3
   end
