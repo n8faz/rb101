@@ -1,3 +1,6 @@
+require 'yaml'
+
+MESSAGES = YAML.load_file('rock_paper_scissors_messages.yml')
 VALID_CHOICES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
 VALID_ABBREVIATIONS = {'r' => 'rock',
                        'p' => 'paper', 
@@ -12,6 +15,14 @@ WIN_CONDITIONS = {'rock' => ['scissors', 'lizard'],
                   'spock' => ['scissors', 'rock']
                  }
 
+def clear_screen
+  system "clear"
+end
+
+def messages(message)
+  MESSAGES[message]
+end
+
 def prompt(message)
   puts "=> #{message}"
 end
@@ -20,18 +31,31 @@ def abbreviation(user_choice)
   VALID_ABBREVIATIONS[user_choice] 
 end
 
+def get_name
+  name = nil
+  loop do
+    name = gets.chomp
+    if name.empty? || name.start_with?(' ')
+      prompt(messages('invalid_name'))
+    else
+      break
+    end
+  end
+  name
+end
+
 def get_user_choice
   choice = nil
     loop do
-      prompt("Choose one: #{VALID_CHOICES.join(', ')}")
-      choice = gets.chomp
+      prompt(messages('choose'))
+      choice = gets.chomp.downcase
       if VALID_CHOICES.include?(choice)
         break
       elsif VALID_ABBREVIATIONS.include?(choice)
         choice = abbreviation(choice)
         break
       else
-      prompt("That's not a valid choice.")
+      prompt(messages('invalid_choice'))
       end
     end
   choice
@@ -56,11 +80,11 @@ end
 
 def display_results(player, computer)
   if win?(player, computer)
-    prompt("You won!")
+    prompt(messages('you_won'))
   elsif win?(computer, player)
-    prompt("Computer won!")
+    prompt(messages('computer_won'))
   else
-    prompt("It's a tie")
+    prompt(messages('tie'))
   end
 end
 
@@ -77,27 +101,49 @@ def display_score(player, computer, player_score, computer_score)
   keep_score(player, computer, player_score, computer_score)
 end
 
+# Program Start
+
+clear_screen
+
+prompt(messages('welcome'))
+
+name = get_name
+
+info = <<-MSG
+Hi, #{name}!
+
+This game varies a bit from the traditional Rock, Paper Scissors...
+
+As I'm sure you are aware; Rock crushes Scissors, Scissors cuts Paper, and Paper covers Rock. In this game, you can also choose Lizard or Spock. Rock crushes Lizard, Lizard poisons Spock, Spock smashes Scissors, Scissors decapitates Lizard, Lizard eats Paper, Paper disproves Spock, and Spock vaporizes Rock.
+
+
+MSG
+
+prompt(info)
 
 loop do # main loop
   player_score = 0
   computer_score = 0
-  
+
   loop do #score loop 
     user_choice = get_user_choice
     computer_choice = get_computer_choice
 
-    prompt("You chose: #{user_choice}; Computer chose: #{computer_choice}")
+    prompt(messages('you_chose') + user_choice.to_s)
+    prompt(messages('computer_chose') + computer_choice.to_s)
 
     display_results(user_choice, computer_choice)
 
     player_score, computer_score = keep_score(user_choice, computer_choice, player_score, computer_score)
-    prompt("The score is: You: #{player_score} Computer: #{computer_score}")
+    prompt(messages('score'))
+    prompt(messages('your_score') + player_score.to_s)
+    prompt(messages('computer_score') + computer_score.to_s)
 
     break if player_score == 3 || computer_score == 3
   end
-  prompt("Do you want to play again?")
+  prompt(messages('again?'))
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
 end
 
-prompt("Thank you for playing. Good bye!")
+prompt(messages('thanks'))
