@@ -137,6 +137,24 @@ def display_score(player, computer, player_score, computer_score)
   keep_score(player, computer, player_score, computer_score)
 end
 
+def play_again?
+  answer = nil
+  loop do
+    arrow_prompt(messages('again?'))
+    answer = gets.chomp
+    if answer.downcase.start_with?('y')
+      answer = 'yes'
+      break
+    elsif answer.downcase.start_with?('n')
+      answer = 'no'
+      break
+    else
+      arrow_prompt(messages('again_invalid'))
+    end
+  end
+  answer
+end
+
 # Program Start
 
 clear_screen
@@ -167,7 +185,9 @@ Paper disproves Spock,
 and Spock vaporizes Rock.
 
 MSG
+
 play = nil
+
 loop do
   arrow_prompt(info)
   play = play?
@@ -175,32 +195,29 @@ loop do
   arrow_prompt(messages('start'))
   no_arrow_prompt(' ')
 
-  loop do # main loop
-    player_score = 0
-    computer_score = 0
+  player_score = 0
+  computer_score = 0
 
-    loop do #score loop 
-      user_choice = get_user_choice
-      computer_choice = get_computer_choice
+  loop do #score loop 
+    user_choice = get_user_choice
+    computer_choice = get_computer_choice
       
-      print_waiting
+    print_waiting
 
-      arrow_prompt(messages('you_chose') + user_choice.to_s)
-      arrow_prompt(messages('computer_chose') + computer_choice.to_s)
+    arrow_prompt(messages('you_chose') + user_choice.to_s)
+    arrow_prompt(messages('computer_chose') + computer_choice.to_s)
 
-      display_results(user_choice, computer_choice)
+    display_results(user_choice, computer_choice)
 
-      player_score, computer_score = keep_score(user_choice, computer_choice, player_score, computer_score)
-      arrow_prompt(messages('score'))
-      arrow_prompt(messages('your_score') + player_score.to_s)
-      arrow_prompt(messages('computer_score') + computer_score.to_s)
+    player_score, computer_score = keep_score(user_choice, computer_choice, player_score, computer_score)
+    arrow_prompt(messages('score'))
+    arrow_prompt(messages('your_score') + player_score.to_s)
+    arrow_prompt(messages('computer_score') + computer_score.to_s)
 
-      break if player_score == 3 || computer_score == 3
-    end
-    arrow_prompt(messages('again?'))
-    answer = gets.chomp
-    break unless answer.downcase.start_with?('y')
+    break if player_score == 3 || computer_score == 3
   end
+
+  break unless play_again? == 'yes'
 end
 which_exit_message?(play, name)
 
