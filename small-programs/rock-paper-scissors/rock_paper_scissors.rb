@@ -79,6 +79,7 @@ def print_start
 end
 
 def print_round(round)
+  clear_screen
   arrow_prompt(messages('line') + " Round #{round} " + messages('line'))
 end
 
@@ -88,7 +89,7 @@ def print_score_tally(name, player_score, computer_score)
   arrow_prompt(messages('computer_score') + computer_score.to_s)
 end
 
-def get_user_choice
+def get_player_choice
   choice = nil
   loop do
     arrow_prompt(messages('choose'))
@@ -109,14 +110,14 @@ def get_computer_choice
   VALID_CHOICES.sample
 end
 
-def print_waiting
-  arrow_prompt(messages('waiting'))
+def print_thinking
+  arrow_prompt(messages('thinking'))
   sleep 2
   no_arrow_prompt(' ')
 end
 
-def print_choices(user_choice, computer_choice)
-  arrow_prompt(messages('you_chose') + user_choice.to_s.capitalize)
+def print_choices(player_choice, computer_choice)
+  arrow_prompt(messages('you_chose') + player_choice.to_s.capitalize)
   arrow_prompt(messages('computer_chose') + computer_choice.to_s.capitalize)
   no_arrow_prompt(' ')
 end
@@ -155,7 +156,7 @@ def next_round?
     break if answer.downcase.start_with?('y')
     arrow_prompt(messages('wait'))
   end
-  clear_screen
+  #clear_screen
 end
 
 def game_over?(player_score, computer_score)
@@ -233,25 +234,23 @@ loop do # main loop
 
   print_start
 
-  player_score = 0
-  computer_score = 0
-  #current_round = 0
-
   loop do # game loop
+    player_score = 0
+    computer_score = 0
     current_round = 0
     loop do # round loop
       current_round += 1
       print_round(current_round)
       print_score_tally(name, player_score, computer_score)
 
-      user_choice = get_user_choice
+      player_choice = get_player_choice
       computer_choice = get_computer_choice
 
-      print_waiting
-      print_choices(user_choice, computer_choice)
-      display_results(user_choice, computer_choice)
+      print_thinking
+      print_choices(player_choice, computer_choice)
+      display_results(player_choice, computer_choice)
 
-      player_score, computer_score = keep_score(user_choice,
+      player_score, computer_score = keep_score(player_choice,
                                                 computer_choice,
                                                 player_score,
                                                 computer_score)
