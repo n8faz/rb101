@@ -127,8 +127,10 @@ end
 
 def display_results(player, computer)
   if win?(player, computer)
+    arrow_prompt("#{player.capitalize} beats #{computer.capitalize}")
     arrow_prompt(messages('you_won_round'))
   elsif win?(computer, player)
+    arrow_prompt("#{computer.capitalize} beats #{player.capitalize}")
     arrow_prompt(messages('computer_won_round'))
   else
     arrow_prompt(messages('tie'))
@@ -158,6 +160,7 @@ def next_round?(name)
     elsif answer.downcase.start_with?('q')
       answer = 'quit'
       arrow_prompt(messages('quitting'))
+      no_arrow_prompt(' ')
       break
     else arrow_prompt(messages('wait'))
     end
