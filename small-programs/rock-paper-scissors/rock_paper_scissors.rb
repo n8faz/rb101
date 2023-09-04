@@ -233,11 +233,9 @@ I, the Computer, will be your opponent. Don't worry, I won't cheat!
 
 MSG
 
-play = nil
-loop do # main loop
-  arrow_prompt(info)
-  play = play?
-  break if play == 'no'
+arrow_prompt(info)
+play = play?
+if play == 'yes'
 
   print_start
 
@@ -267,7 +265,5 @@ loop do # main loop
     no_arrow_prompt(' ')
     break unless play_again? == 'yes'
   end
-  break
 end
-
 which_exit_message?(play, name)
