@@ -235,9 +235,10 @@ loop do # main loop
 
   player_score = 0
   computer_score = 0
-  current_round = 0
+  #current_round = 0
 
   loop do # game loop
+    current_round = 0
     loop do # round loop
       current_round += 1
       print_round(current_round)
