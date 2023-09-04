@@ -79,12 +79,12 @@ def print_start
 end
 
 def print_round(round)
-  arrow_prompt("Round #{round}")
+  arrow_prompt(messages('line') + " Round #{round} " + messages('line'))
 end
 
-def print_score_tally(player_score, computer_score)
+def print_score_tally(name, player_score, computer_score)
   arrow_prompt(messages('score'))
-  arrow_prompt(messages('your_score') + player_score.to_s)
+  arrow_prompt("#{name}: " + player_score.to_s)
   arrow_prompt(messages('computer_score') + computer_score.to_s)
 end
 
@@ -221,6 +221,8 @@ and Spock vaporizes Rock.
 
 The game will be a best of 3. First to win 3 rounds is the Champion!
 
+I, the Computer, will be your opponent. Don't worry, I won't cheat!
+
 MSG
 
 play = nil
@@ -235,27 +237,25 @@ loop do # main loop
   player_score = 0
   computer_score = 0
   current_round = 0
-
-  loop do # score loop
+  
+  loop do # game loop
     current_round += 1
-    loop do
-      print_round(current_round)
-      print_score_tally(player_score, computer_score)
+    print_round(current_round)
+    print_score_tally(name, player_score, computer_score)
 
-      user_choice = get_user_choice
-      computer_choice = get_computer_choice
+    user_choice = get_user_choice
+    computer_choice = get_computer_choice
 
-      print_waiting
-      print_choices(user_choice, computer_choice)
-      display_results(user_choice, computer_choice)
+    print_waiting
+    print_choices(user_choice, computer_choice)
+    display_results(user_choice, computer_choice)
 
-      player_score, computer_score = keep_score(user_choice,
+    player_score, computer_score = keep_score(user_choice,
                                                 computer_choice,
                                                 player_score,
                                                 computer_score)
-      break if next_round?
-    end
     break if game_over?(player_score, computer_score)
+    next_round?
   end
 
   break unless play_again? == 'yes'
