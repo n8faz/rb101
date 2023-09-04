@@ -237,7 +237,7 @@ loop do # main loop
   player_score = 0
   computer_score = 0
   current_round = 0
-  
+
   loop do # game loop
     current_round += 1
     print_round(current_round)
@@ -251,9 +251,9 @@ loop do # main loop
     display_results(user_choice, computer_choice)
 
     player_score, computer_score = keep_score(user_choice,
-                                                computer_choice,
-                                                player_score,
-                                                computer_score)
+                                              computer_choice,
+                                              player_score,
+                                              computer_score)
     break if game_over?(player_score, computer_score)
     next_round?
   end
