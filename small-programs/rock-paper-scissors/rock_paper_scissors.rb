@@ -180,6 +180,27 @@ def game_over?(player_score, computer_score)
   end
 end
 
+def round_loop(name, player_score, computer_score, current_round)
+  loop do
+    current_round += 1
+    print_round(current_round)
+    print_score_tally(name, player_score, computer_score)
+
+    player_choice = get_player_choice
+    computer_choice = get_computer_choice
+
+    print_thinking
+    print_choices(player_choice, computer_choice)
+    display_results(player_choice, computer_choice)
+
+    player_score, computer_score = keep_score(player_choice,
+                                              computer_choice,
+                                              player_score,
+                                              computer_score)
+    break if game_over?(player_score, computer_score) || next_round? == 'quit'
+  end
+end
+
 def play_again?
   answer = nil
   loop do
@@ -235,35 +256,21 @@ MSG
 
 arrow_prompt(info)
 play = play?
-if play == 'yes'
 
+if play == 'yes'
   print_start
 
   loop do # game loop
     player_score = 0
     computer_score = 0
     current_round = 0
-    loop do # round loop
-      current_round += 1
-      print_round(current_round)
-      print_score_tally(name, player_score, computer_score)
-
-      player_choice = get_player_choice
-      computer_choice = get_computer_choice
-
-      print_thinking
-      print_choices(player_choice, computer_choice)
-      display_results(player_choice, computer_choice)
-
-      player_score, computer_score = keep_score(player_choice,
-                                                computer_choice,
-                                                player_score,
-                                                computer_score)
-      break if game_over?(player_score, computer_score) ||
-               next_round? == 'quit'
-    end
+    round_loop(name,
+               player_score,
+               computer_score,
+               current_round)
     no_arrow_prompt(' ')
     break unless play_again? == 'yes'
   end
 end
+
 which_exit_message?(play, name)
