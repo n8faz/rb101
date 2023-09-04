@@ -75,7 +75,6 @@ end
 def print_start
   arrow_prompt(messages('start'))
   sleep 2
-  clear_screen
 end
 
 def print_round(round)
@@ -149,14 +148,21 @@ def keep_score(player,
   [player_score, computer_score]
 end
 
-def next_round?
+def next_round?(name)
+  answer = nil
   arrow_prompt(messages('next_round?'))
   loop do
     answer = gets.chomp
-    break if answer.downcase.start_with?('y')
-    arrow_prompt(messages('wait'))
+    if answer.downcase.start_with?('y')
+      break
+    elsif answer.downcase.start_with?('q')
+      answer = 'quit'
+      arrow_prompt(messages('quitting'))
+      break
+    else arrow_prompt(messages('wait'))
+    end
   end
-  #clear_screen
+  answer
 end
 
 def game_over?(player_score, computer_score)
@@ -254,11 +260,12 @@ loop do # main loop
                                                 computer_choice,
                                                 player_score,
                                                 computer_score)
-      break if game_over?(player_score, computer_score)
-      next_round?
+      break if game_over?(player_score, computer_score) ||
+               next_round?(name) == 'quit'
     end
   break unless play_again? == 'yes'
   end
+  break
 end
 
 which_exit_message?(play, name)
