@@ -150,7 +150,7 @@ def keep_score(player,
   [player_score, computer_score]
 end
 
-def next_round?(name)
+def next_round?
   answer = nil
   arrow_prompt(messages('next_round?'))
   loop do
@@ -160,9 +160,9 @@ def next_round?(name)
     elsif answer.downcase.start_with?('q')
       answer = 'quit'
       arrow_prompt(messages('quitting'))
-      no_arrow_prompt(' ')
       break
-    else arrow_prompt(messages('wait'))
+    else
+      arrow_prompt(messages('wait'))
     end
   end
   answer
@@ -171,11 +171,9 @@ end
 def game_over?(player_score, computer_score)
   if player_score == 3
     arrow_prompt(messages('player_champion'))
-    no_arrow_prompt(' ')
     true
   elsif computer_score == 3
     arrow_prompt(messages('computer_champion'))
-    no_arrow_prompt(' ')
     true
   else
     false
@@ -184,6 +182,7 @@ end
 
 def play_again?
   answer = nil
+  no_arrow_prompt(' ')
   loop do
     arrow_prompt(messages('again?'))
     answer = gets.chomp
@@ -264,9 +263,9 @@ loop do # main loop
                                                 player_score,
                                                 computer_score)
       break if game_over?(player_score, computer_score) ||
-               next_round?(name) == 'quit'
+               next_round? == 'quit'
     end
-  break unless play_again? == 'yes'
+    break unless play_again? == 'yes'
   end
   break
 end
