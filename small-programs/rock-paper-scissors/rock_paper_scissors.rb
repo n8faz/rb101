@@ -74,7 +74,7 @@ end
 
 def print_start
   arrow_prompt(messages('start'))
-  sleep 1
+  sleep 2
   clear_screen
 end
 
@@ -146,6 +146,16 @@ def keep_score(player,
     computer_score += 1
   end
   [player_score, computer_score]
+end
+
+def next_round?
+  arrow_prompt(messages('next_round?'))
+  loop do
+    answer = gets.chomp
+    break if answer.downcase.start_with?('y')
+    arrow_prompt(messages('wait'))
+  end
+  clear_screen
 end
 
 def game_over?(player_score, computer_score)
@@ -228,22 +238,23 @@ loop do # main loop
 
   loop do # score loop
     current_round += 1
+    loop do
+      print_round(current_round)
+      print_score_tally(player_score, computer_score)
 
-    print_round(current_round)
-    print_score_tally(player_score, computer_score)
+      user_choice = get_user_choice
+      computer_choice = get_computer_choice
 
-    user_choice = get_user_choice
-    computer_choice = get_computer_choice
+      print_waiting
+      print_choices(user_choice, computer_choice)
+      display_results(user_choice, computer_choice)
 
-    print_waiting
-    print_choices(user_choice, computer_choice)
-    display_results(user_choice, computer_choice)
-
-    player_score, computer_score = keep_score(user_choice,
-                                              computer_choice,
-                                              player_score,
-                                              computer_score)
-
+      player_score, computer_score = keep_score(user_choice,
+                                                computer_choice,
+                                                player_score,
+                                                computer_score)
+      break if next_round?
+    end
     break if game_over?(player_score, computer_score)
   end
 
