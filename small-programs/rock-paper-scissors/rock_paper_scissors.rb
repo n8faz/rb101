@@ -182,7 +182,6 @@ end
 
 def play_again?
   answer = nil
-  no_arrow_prompt(' ')
   loop do
     arrow_prompt(messages('again?'))
     answer = gets.chomp
@@ -265,6 +264,7 @@ loop do # main loop
       break if game_over?(player_score, computer_score) ||
                next_round? == 'quit'
     end
+    no_arrow_prompt(' ')
     break unless play_again? == 'yes'
   end
   break
