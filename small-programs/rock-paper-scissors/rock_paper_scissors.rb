@@ -99,7 +99,7 @@ def get_user_choice
       choice = abbreviation(choice)
       break
     else
-    arrow_prompt(messages('invalid_choice'))
+      arrow_prompt(messages('invalid_choice'))
     end
   end
   choice
@@ -151,9 +151,11 @@ end
 def game_over?(player_score, computer_score)
   if player_score == 3
     arrow_prompt(messages('player_champion'))
+    no_arrow_prompt(' ')
     true
   elsif computer_score == 3
     arrow_prompt(messages('computer_champion'))
+    no_arrow_prompt(' ')
     true
   else
     false
@@ -163,7 +165,6 @@ end
 def play_again?
   answer = nil
   loop do
-    no_arrow_prompt(' ')
     arrow_prompt(messages('again?'))
     answer = gets.chomp
     if answer.downcase.start_with?('y')
@@ -190,7 +191,7 @@ name = get_name
 info = <<-MSG
 Hi, #{name}!
 
-This game varies a bit from the traditional Rock, Paper Scissors...
+This game varies a bit from the traditional Rock, Paper, Scissors...
 
 In the traditional game:
 
@@ -233,7 +234,7 @@ loop do # main loop
 
     user_choice = get_user_choice
     computer_choice = get_computer_choice
-      
+
     print_waiting
     print_choices(user_choice, computer_choice)
     display_results(user_choice, computer_choice)
