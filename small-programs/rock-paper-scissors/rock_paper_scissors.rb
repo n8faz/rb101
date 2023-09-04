@@ -226,7 +226,6 @@ I, the Computer, will be your opponent. Don't worry, I won't cheat!
 MSG
 
 play = nil
-
 loop do # main loop
   arrow_prompt(info)
   play = play?
@@ -239,25 +238,27 @@ loop do # main loop
   current_round = 0
 
   loop do # game loop
-    current_round += 1
-    print_round(current_round)
-    print_score_tally(name, player_score, computer_score)
+    loop do # round loop
+      current_round += 1
+      print_round(current_round)
+      print_score_tally(name, player_score, computer_score)
 
-    user_choice = get_user_choice
-    computer_choice = get_computer_choice
+      user_choice = get_user_choice
+      computer_choice = get_computer_choice
 
-    print_waiting
-    print_choices(user_choice, computer_choice)
-    display_results(user_choice, computer_choice)
+      print_waiting
+      print_choices(user_choice, computer_choice)
+      display_results(user_choice, computer_choice)
 
-    player_score, computer_score = keep_score(user_choice,
-                                              computer_choice,
-                                              player_score,
-                                              computer_score)
-    break if game_over?(player_score, computer_score)
-    next_round?
-  end
-
+      player_score, computer_score = keep_score(user_choice,
+                                                computer_choice,
+                                                player_score,
+                                                computer_score)
+      break if game_over?(player_score, computer_score)
+      next_round?
+    end
   break unless play_again? == 'yes'
+  end
 end
+
 which_exit_message?(play, name)
