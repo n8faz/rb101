@@ -180,7 +180,10 @@ def game_over?(player_score, computer_score)
   end
 end
 
-def round_loop(name, player_score, computer_score, current_round)
+def round_loop(name,
+               player_score,
+               computer_score,
+               current_round)
   loop do
     current_round += 1
     print_round(current_round)
