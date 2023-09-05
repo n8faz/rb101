@@ -126,7 +126,7 @@ def win?(first, second)
   WIN_CONDITIONS[first].include?(second)
 end
 
-def display_results(player, computer)
+def print_results(player, computer)
   if win?(player, computer)
     arrow_prompt("#{player.capitalize} beats #{computer.capitalize}")
     arrow_prompt(messages('you_won_round'))
@@ -195,7 +195,7 @@ def round_loop(name,
 
     print_thinking
     print_choices(player_choice, computer_choice)
-    display_results(player_choice, computer_choice)
+    print_results(player_choice, computer_choice)
 
     player_score, computer_score = keep_score(player_choice,
                                               computer_choice,
