@@ -12,6 +12,7 @@ WIN_CONDITIONS = { 'rock' => ['scissors', 'lizard'],
                    'scissors' => ['paper', 'lizard'],
                    'lizard' => ['paper', 'spock'],
                    'spock' => ['scissors', 'rock'] }
+ROUNDS_TO_WIN = 3
 
 def clear_screen
   system "clear"
@@ -169,10 +170,10 @@ def next_round?
 end
 
 def game_over?(player_score, computer_score)
-  if player_score == 3
+  if player_score == ROUNDS_TO_WIN
     arrow_prompt(messages('player_champion'))
     true
-  elsif computer_score == 3
+  elsif computer_score == ROUNDS_TO_WIN
     arrow_prompt(messages('computer_champion'))
     true
   else
