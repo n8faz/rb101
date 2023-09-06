@@ -85,7 +85,7 @@ def print_round(round)
   arrow_prompt(messages('line') + " Round #{round} " + messages('line'))
 end
 
-def print_score_tally(name, score)
+def print_current_score(name, score)
   arrow_prompt(messages('current_score'))
   arrow_prompt("#{name}: " + score[:player].to_s)
   arrow_prompt(messages('computer_score') + score[:computer].to_s)
@@ -137,13 +137,13 @@ end
 
 def print_player_beats_computer(choices)
   arrow_prompt(("#{choices[:player].capitalize} beats " +
-               choices[:computer].capitalize.to_s))
+                choices[:computer].capitalize.to_s))
   arrow_prompt(messages('you_won_round'))
 end
 
 def print_computer_beats_player(choices)
   arrow_prompt(("#{choices[:computer].capitalize} beats " +
-               choices[:player].capitalize.to_s))
+                choices[:player].capitalize.to_s))
   arrow_prompt(messages('computer_won_round'))
 end
 
@@ -205,7 +205,7 @@ def round_loop(name,
   loop do
     current_round += 1
     print_round(current_round)
-    print_score_tally(name, score)
+    print_current_score(name, score)
 
     choices = { player: get_player_choice,
                 computer: get_computer_choice }
