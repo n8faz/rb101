@@ -29,7 +29,7 @@ def valid_abbreviation
 end
 
 def valid_choice?(choice)
-  MOVES.include?(choice) || valid_abbreviation.include?(choice)
+  MOVES.include?(choice)
 end
 
 def convert_abbreviation(choice)
