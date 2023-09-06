@@ -118,9 +118,9 @@ def print_thinking
   no_arrow_prompt(' ')
 end
 
-def print_choices(player_choice, computer_choice)
-  arrow_prompt(messages('you_chose') + player_choice.to_s.capitalize)
-  arrow_prompt(messages('computer_chose') + computer_choice.to_s.capitalize)
+def print_choices(choices)
+  arrow_prompt(messages('you_chose') + choices[:player].to_s.capitalize)
+  arrow_prompt(messages('computer_chose') + choices[:computer].to_s.capitalize)
   no_arrow_prompt(' ')
 end
 
@@ -128,12 +128,12 @@ def win?(first, second)
   MOVES.dig(first, :beats).include?(second)
 end
 
-def print_results(player, computer)
-  if win?(player, computer)
-    arrow_prompt("#{player.capitalize} beats #{computer.capitalize}")
+def print_results(choices)
+  if win?(choices[:player], choices[:computer])
+    arrow_prompt("#{choices[:player].capitalize} beats #{choices[:computer].capitalize}")
     arrow_prompt(messages('you_won_round'))
-  elsif win?(computer, player)
-    arrow_prompt("#{computer.capitalize} beats #{player.capitalize}")
+  elsif win?(choices[:computer], choices[:player])
+    arrow_prompt("#{choices[:computer].capitalize} beats #{choices[:player].capitalize}")
     arrow_prompt(messages('computer_won_round'))
   else
     arrow_prompt(messages('tie'))
@@ -141,12 +141,11 @@ def print_results(player, computer)
   no_arrow_prompt(' ')
 end
 
-def keep_score(player,
-               computer,
+def keep_score(choices,
                score)
-  if win?(player, computer)
+  if win?(choices[:player], choices[:computer])
     score[:player] += 1
-  elsif win?(computer, player)
+  elsif win?(choices[:computer], choices[:player])
     score[:computer] += 1
   end
   score
@@ -190,16 +189,14 @@ def round_loop(name,
     print_round(current_round)
     print_score_tally(name, score)
 
-    player_choice = get_player_choice
-    computer_choice = get_computer_choice
+    choices = {player: get_player_choice,
+               computer: get_computer_choice}
 
     print_thinking
-    print_choices(player_choice, computer_choice)
-    print_results(player_choice, computer_choice)
+    print_choices(choices)
+    print_results(choices)
 
-    score = keep_score(player_choice,
-                       computer_choice,
-                       score)
+    score = keep_score(choices, score)
     break if game_over?(score) || next_round? == 'quit'
   end
 end
