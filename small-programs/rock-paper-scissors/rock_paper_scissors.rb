@@ -67,7 +67,7 @@ def play?
   answer
 end
 
-def which_exit_message?(play, name)
+def print_which_exit_message?(play, name)
   if play == 'no'
     arrow_prompt(messages('didnt_play') + "#{name}.")
   else
@@ -85,10 +85,10 @@ def print_round(round)
   arrow_prompt(messages('line') + " Round #{round} " + messages('line'))
 end
 
-def print_score_tally(name, player_score, computer_score)
+def print_score_tally(name, score)
   arrow_prompt(messages('score'))
-  arrow_prompt("#{name}: " + player_score.to_s)
-  arrow_prompt(messages('computer_score') + computer_score.to_s)
+  arrow_prompt("#{name}: " + score[:player].to_s)
+  arrow_prompt(messages('computer_score') + score[:computer].to_s)
 end
 
 def get_player_choice
@@ -143,14 +143,13 @@ end
 
 def keep_score(player,
                computer,
-               player_score,
-               computer_score)
+               score)
   if win?(player, computer)
-    player_score += 1
+    score[:player] += 1
   elsif win?(computer, player)
-    computer_score += 1
+    score[:computer] += 1
   end
-  [player_score, computer_score]
+  score
 end
 
 def next_round?
@@ -171,11 +170,11 @@ def next_round?
   answer
 end
 
-def game_over?(player_score, computer_score)
-  if player_score == ROUNDS_TO_WIN
+def game_over?(score)
+  if score[:player] == ROUNDS_TO_WIN
     arrow_prompt(messages('player_champion'))
     true
-  elsif computer_score == ROUNDS_TO_WIN
+  elsif score[:computer] == ROUNDS_TO_WIN
     arrow_prompt(messages('computer_champion'))
     true
   else
@@ -184,13 +183,12 @@ def game_over?(player_score, computer_score)
 end
 
 def round_loop(name,
-               player_score,
-               computer_score,
+               score,
                current_round)
   loop do
     current_round += 1
     print_round(current_round)
-    print_score_tally(name, player_score, computer_score)
+    print_score_tally(name, score)
 
     player_choice = get_player_choice
     computer_choice = get_computer_choice
@@ -199,11 +197,10 @@ def round_loop(name,
     print_choices(player_choice, computer_choice)
     print_results(player_choice, computer_choice)
 
-    player_score, computer_score = keep_score(player_choice,
-                                              computer_choice,
-                                              player_score,
-                                              computer_score)
-    break if game_over?(player_score, computer_score) || next_round? == 'quit'
+    score = keep_score(player_choice,
+                       computer_choice,
+                       score)
+    break if game_over?(score) || next_round? == 'quit'
   end
 end
 
@@ -267,16 +264,15 @@ if play == 'yes'
   print_start
 
   loop do # game loop
-    player_score = 0
-    computer_score = 0
+    score = { player: 0,
+              computer: 0 }
     current_round = 0
     round_loop(name,
-               player_score,
-               computer_score,
+               score,
                current_round)
     no_arrow_prompt(' ')
     break unless play_again? == 'yes'
   end
 end
 
-which_exit_message?(play, name)
+print_which_exit_message?(play, name)
