@@ -221,7 +221,7 @@ end
 
 def rematch
   arrow_prompt(messages('rematch'))
-  sleep 3
+  sleep 2
   'yes'
 end
 
