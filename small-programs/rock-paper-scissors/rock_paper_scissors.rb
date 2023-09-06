@@ -271,7 +271,7 @@ Lizard eats Paper,
 Paper disproves Spock,
 and Spock vaporizes Rock.
 
-The game will be a best of 3. First to win 3 rounds is the Champion!
+The game will consist of a series of rounds. First to win 3 rounds is the Champion!
 
 I, the Computer, will be your opponent. Don't worry, I won't cheat!
 
