@@ -103,7 +103,7 @@ def get_player_choice
   loop do
     arrow_prompt(messages('choose'))
     choice = gets.chomp.downcase
-    if choice.length < 3 && valid_abbreviation.include?(choice)
+    if valid_abbreviation.include?(choice)
       choice = convert_abbreviation(choice)
       break
     elsif valid_choice?(choice)
@@ -219,13 +219,19 @@ def round_loop(name,
   end
 end
 
+def rematch
+  arrow_prompt(messages('rematch'))
+  sleep 3
+  'yes'
+end
+
 def play_again?
   answer = nil
   loop do
     arrow_prompt(messages('again?'))
     answer = gets.chomp
     if answer.downcase.start_with?('y')
-      answer = 'yes'
+      answer = rematch
       break
     elsif answer.downcase.start_with?('n')
       answer = 'no'
