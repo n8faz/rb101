@@ -62,11 +62,8 @@ def get_loan_amount
   loop do
     arrow_prompt_yaml('loan_amount')
     loan_amount = gets.chomp.delete("$").delete(",")
-    if valid_number?(loan_amount)
-      break
-    else
-      arrow_prompt_yaml('invalid_amount')
-    end
+    break if valid_number?(loan_amount)
+    arrow_prompt_yaml('invalid_amount')
   end
   loan_amount.to_f
 end
@@ -76,11 +73,8 @@ def get_apr
   loop do
     arrow_prompt_yaml('apr')
     apr = gets.chomp.delete("%")
-    if valid_number?(apr) || apr == '0'
-      break
-    else
-      arrow_prompt_yaml('invalid_apr')
-    end
+    break if valid_number?(apr) || apr == '0'
+    arrow_prompt_yaml('invalid_apr')
   end
   apr.to_f
 end
