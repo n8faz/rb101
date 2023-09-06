@@ -135,21 +135,30 @@ def win?(first, second)
   MOVES.dig(first, :beats).include?(second)
 end
 
+def print_player_beats_computer(choices)
+  arrow_prompt(("#{choices[:player].capitalize} beats " +
+               choices[:computer].capitalize.to_s))
+  arrow_prompt(messages('you_won_round'))
+end
+
+def print_computer_beats_player(choices)
+  arrow_prompt(("#{choices[:computer].capitalize} beats " +
+               choices[:player].capitalize.to_s))
+  arrow_prompt(messages('computer_won_round'))
+end
+
 def print_results(choices)
   if win?(choices[:player], choices[:computer])
-    arrow_prompt("#{choices[:player].capitalize} beats #{choices[:computer].capitalize}")
-    arrow_prompt(messages('you_won_round'))
+    print_player_beats_computer(choices)
   elsif win?(choices[:computer], choices[:player])
-    arrow_prompt("#{choices[:computer].capitalize} beats #{choices[:player].capitalize}")
-    arrow_prompt(messages('computer_won_round'))
+    print_computer_beats_player(choices)
   else
     arrow_prompt(messages('tie'))
   end
   no_arrow_prompt(' ')
 end
 
-def keep_score(choices,
-               score)
+def keep_score(choices, score)
   if win?(choices[:player], choices[:computer])
     score[:player] += 1
   elsif win?(choices[:computer], choices[:player])
@@ -198,8 +207,8 @@ def round_loop(name,
     print_round(current_round)
     print_score_tally(name, score)
 
-    choices = {player: get_player_choice,
-               computer: get_computer_choice}
+    choices = { player: get_player_choice,
+                computer: get_computer_choice }
 
     print_thinking
     print_choices(choices)
@@ -233,7 +242,6 @@ end
 clear_screen
 
 arrow_prompt(messages('welcome'))
-
 name = get_name
 
 info = <<-MSG
