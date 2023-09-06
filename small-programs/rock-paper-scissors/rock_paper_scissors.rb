@@ -1,17 +1,11 @@
 require 'yaml'
 
 MESSAGES = YAML.load_file('rock_paper_scissors_messages.yml')
-VALID_CHOICES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
-VALID_ABBREVIATIONS = { 'r' => 'rock',
-                        'p' => 'paper',
-                        'sc' => 'scissors',
-                        'l' => 'lizard',
-                        'sp' => 'spock' }
-WIN_CONDITIONS = { 'rock' => ['scissors', 'lizard'],
-                   'paper' => ['rock', 'spock'],
-                   'scissors' => ['paper', 'lizard'],
-                   'lizard' => ['paper', 'spock'],
-                   'spock' => ['scissors', 'rock'] }
+MOVES = { 'rock' => { abbrev: 'r', beats: ['scissors', 'lizard'] },
+          'paper' => { abbrev: 'p', beats: ['spock', 'rock'] },
+          'scissors' => { abbrev: 'sc', beats: ['paper', 'lizard'] },
+          'lizard' => { abbrev: 'l', beats: ['spock', 'paper'] },
+          'spock' => { abbrev: 'sp', beats: ['scissors', 'rock'] } }
 ROUNDS_TO_WIN = 3
 
 def clear_screen
@@ -30,8 +24,16 @@ def no_arrow_prompt(message)
   puts message
 end
 
-def abbreviation(user_choice)
-  VALID_ABBREVIATIONS[user_choice]
+def valid_abbreviation
+  MOVES.map { |_k, v| v[:abbrev] }
+end
+
+def valid_choice?(choice)
+  MOVES.include?(choice) || valid_abbreviation.include?(choice)
+end
+
+def convert_abbreviation(choice)
+  (MOVES.map { |k, v| k if v[:abbrev] == choice }).join
 end
 
 def get_name
@@ -94,10 +96,10 @@ def get_player_choice
   loop do
     arrow_prompt(messages('choose'))
     choice = gets.chomp.downcase
-    if VALID_CHOICES.include?(choice)
+    if choice.length < 3 && valid_abbreviation.include?(choice)
+      choice = convert_abbreviation(choice)
       break
-    elsif VALID_ABBREVIATIONS.include?(choice)
-      choice = abbreviation(choice)
+    elsif valid_choice?(choice)
       break
     else
       arrow_prompt(messages('invalid_choice'))
@@ -107,7 +109,7 @@ def get_player_choice
 end
 
 def get_computer_choice
-  VALID_CHOICES.sample
+  MOVES.keys.sample
 end
 
 def print_thinking
@@ -123,7 +125,7 @@ def print_choices(player_choice, computer_choice)
 end
 
 def win?(first, second)
-  WIN_CONDITIONS[first].include?(second)
+  MOVES.dig(first, :beats).include?(second)
 end
 
 def print_results(player, computer)
