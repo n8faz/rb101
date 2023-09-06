@@ -86,7 +86,14 @@ def print_round(round)
 end
 
 def print_score_tally(name, score)
-  arrow_prompt(messages('score'))
+  arrow_prompt(messages('current_score'))
+  arrow_prompt("#{name}: " + score[:player].to_s)
+  arrow_prompt(messages('computer_score') + score[:computer].to_s)
+end
+
+def print_final_score(name, score)
+  no_arrow_prompt(' ')
+  arrow_prompt(messages('final_score'))
   arrow_prompt("#{name}: " + score[:player].to_s)
   arrow_prompt(messages('computer_score') + score[:computer].to_s)
 end
@@ -169,12 +176,14 @@ def next_round?
   answer
 end
 
-def game_over?(score)
+def game_over?(name, score)
   if score[:player] == ROUNDS_TO_WIN
     arrow_prompt(messages('player_champion'))
+    print_final_score(name, score)
     true
   elsif score[:computer] == ROUNDS_TO_WIN
     arrow_prompt(messages('computer_champion'))
+    print_final_score(name, score)
     true
   else
     false
@@ -197,7 +206,7 @@ def round_loop(name,
     print_results(choices)
 
     score = keep_score(choices, score)
-    break if game_over?(score) || next_round? == 'quit'
+    break if game_over?(name, score) || next_round? == 'quit'
   end
 end
 
