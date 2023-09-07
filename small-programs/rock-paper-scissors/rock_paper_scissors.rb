@@ -8,8 +8,6 @@ MOVES = { 'rock' => { abbrev: 'r', beats: ['scissors', 'lizard'] },
           'spock' => { abbrev: 'sp', beats: ['scissors', 'rock'] } }
 ROUNDS_TO_WIN = 3
 
-# Methods that return
-
 def clear_screen
   system "clear"
 end
@@ -142,7 +140,6 @@ def keep_score(choices, score)
   score
 end
 
-# Methods that print
 def print_intro(name)
   arrow_prompt("Hi, #{name}!")
   puts
