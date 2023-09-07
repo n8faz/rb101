@@ -57,7 +57,7 @@ def get_name
   name = nil
   loop do
     name = gets.chomp
-    if name.empty? || name.start_with?
+    if name.empty? || name.start_with?(' ')
       arrow_prompt(MESSAGES['invalid_name'])
     else
       break
