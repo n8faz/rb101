@@ -20,12 +20,12 @@ def valid_abbreviation
   MOVES.map { |_k, v| v[:abbrev] }
 end
 
-def valid_choice?(choice)
-  MOVES.include?(choice)
-end
-
 def convert_abbreviation(choice)
   (MOVES.map { |k, v| k if v[:abbrev] == choice }).join
+end
+
+def valid_choice?(choice)
+  MOVES.include?(choice)
 end
 
 def win?(first, second)
@@ -146,17 +146,28 @@ def print_intro(name)
   puts
 end
 
-def print_which_exit_message?(play, name)
+def print_start
+  arrow_prompt(MESSAGES['start'])
+  sleep 2
+end
+
+def print_thinking
+  arrow_prompt(MESSAGES['thinking'])
+  sleep 2
+  puts
+end
+
+def print_rematch
+  arrow_prompt(MESSAGES['rematch'])
+  sleep 2
+end
+
+def print_exit_message(play, name)
   if play == 'no'
     arrow_prompt(MESSAGES['didnt_play'] + "#{name}.")
   else
     arrow_prompt(MESSAGES['thanks'] + "#{name}!")
   end
-end
-
-def print_start
-  arrow_prompt(MESSAGES['start'])
-  sleep 2
 end
 
 def print_round(round)
@@ -172,12 +183,6 @@ def print_score(name, score)
   end
   arrow_prompt("#{name}: " + score[:player].to_s)
   arrow_prompt(MESSAGES['computer_score'] + score[:computer].to_s)
-end
-
-def print_thinking
-  arrow_prompt(MESSAGES['thinking'])
-  sleep 2
-  puts
 end
 
 def print_choices(choices)
@@ -196,7 +201,7 @@ def print_beats(first, second)
   end
 end
 
-def print_results(choices)
+def print_round_result(choices)
   if win?(choices[:player], choices[:computer])
     arrow_prompt(MESSAGES['you_won_round'])
   elsif win?(choices[:computer], choices[:player])
@@ -212,7 +217,6 @@ def print_champion(name, score)
     arrow_prompt(MESSAGES['player_champion'])
     puts
     print_score(name, score)
-
   elsif score[:computer] == ROUNDS_TO_WIN
     arrow_prompt(MESSAGES['computer_champion'])
     puts
@@ -220,12 +224,7 @@ def print_champion(name, score)
   end
 end
 
-def print_rematch
-  arrow_prompt(MESSAGES['rematch'])
-  sleep 2
-end
-
-def round_loop(name, score, current_round)
+def play_round(name, score, current_round)
   loop do
     current_round += 1
     print_round(current_round)
@@ -237,7 +236,7 @@ def round_loop(name, score, current_round)
     print_thinking
     print_choices(choices)
     print_beats(choices[:player], choices[:computer])
-    print_results(choices)
+    print_round_result(choices)
 
     score = keep_score(choices, score)
     print_champion(name, score)
@@ -260,9 +259,9 @@ if play == 'yes'
   loop do # game loop
     score = { player: 0, computer: 0 }
     current_round = 0
-    round_loop(name, score, current_round)
+    play_round(name, score, current_round)
     break unless play_again? == 'yes'
   end
 end
 
-print_which_exit_message?(play, name)
+print_exit_message(play, name)
