@@ -195,10 +195,8 @@ def print_choices(choices)
 end
 
 def print_beats(first, second)
-  if win?(first, second)
     arrow_prompt(("#{first.capitalize} beats " +
-                  second.capitalize.to_s))
-  end 
+                  second.capitalize.to_s)) 
 end
 
 def print_results(choices)
