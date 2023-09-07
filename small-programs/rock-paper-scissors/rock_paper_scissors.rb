@@ -14,10 +14,6 @@ def clear_screen
   system "clear"
 end
 
-def messages(message)
-  MESSAGES[message]
-end
-
 def arrow_prompt(message)
   puts "=> #{message}"
 end
@@ -45,7 +41,7 @@ end
 def get_player_choice
   choice = nil
   loop do
-    arrow_prompt(messages('choose'))
+    arrow_prompt(MESSAGES['choose'])
     choice = gets.chomp.downcase
     if valid_abbreviation.include?(choice)
       choice = convert_abbreviation(choice)
@@ -53,7 +49,7 @@ def get_player_choice
     elsif valid_choice?(choice)
       break
     else
-      arrow_prompt(messages('invalid_choice'))
+      arrow_prompt(MESSAGES['invalid_choice'])
     end
   end
   choice
@@ -64,7 +60,7 @@ def get_name
   loop do
     name = gets.chomp
     if name.empty? || name.start_with?
-      arrow_prompt(messages('invalid_name'))
+      arrow_prompt(MESSAGES['invalid_name'])
     else
       break
     end
@@ -83,24 +79,24 @@ end
 def play?
   answer = nil
   loop do
-    arrow_prompt(messages('play?'))
+    arrow_prompt(MESSAGES['play?'])
     answer = gets.chomp
     answer = yes_or_no?(answer)
     break if answer == 'yes' || answer == 'no'
-    arrow_prompt(messages('play_invalid'))
+    arrow_prompt(MESSAGES['play_invalid'])
   end
   answer
 end
 
 def rematch
-  arrow_prompt(messages('rematch'))
+  arrow_prompt(MESSAGES['rematch'])
   sleep 2
 end
 
 def play_again?
   answer = nil
   loop do
-    arrow_prompt(messages('again?'))
+    arrow_prompt(MESSAGES['again?'])
     answer = gets.chomp
     answer = yes_or_no?(answer)
     if answer == 'yes'
@@ -109,7 +105,7 @@ def play_again?
     elsif answer == 'no'
       break
     else
-      arrow_prompt(messages('again_invalid'))
+      arrow_prompt(MESSAGES['again_invalid'])
     end
   end
   answer
@@ -117,24 +113,24 @@ end
 
 def next_round?
   answer = nil
-  arrow_prompt(messages('next_round?'))
+  arrow_prompt(MESSAGES['next_round?'])
   loop do
     answer = gets.chomp
     if answer.downcase.start_with?('y')
       break
     elsif answer.downcase.start_with?('q')
       answer = 'quit'
-      arrow_prompt(messages('quitting'))
+      arrow_prompt(MESSAGES['quitting'])
       break
     else
-      arrow_prompt(messages('wait'))
+      arrow_prompt(MESSAGES['wait'])
     end
   end
   answer
 end
 
 def game_over?(score)
-  (score[:player] || score[:computer]) == ROUNDS_TO_WIN
+  score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
 end
 
 def keep_score(choices, score)
@@ -150,85 +146,85 @@ end
 def print_intro(name)
   arrow_prompt("Hi, #{name}!")
   puts
-  arrow_prompt(messages('rules'))
+  arrow_prompt(MESSAGES['rules'])
   puts
-  arrow_prompt(messages('rounds') + "#{ROUNDS_TO_WIN} rounds is the Champion!")
+  arrow_prompt(MESSAGES['rounds'] + "#{ROUNDS_TO_WIN} rounds is the Champion!")
   puts
-  arrow_prompt(messages('opponent'))
+  arrow_prompt(MESSAGES['opponent'])
   puts
 end
 
 def print_which_exit_message?(play, name)
   if play == 'no'
-    arrow_prompt(messages('didnt_play') + "#{name}.")
+    arrow_prompt(MESSAGES['didnt_play'] + "#{name}.")
   else
-    arrow_prompt(messages('thanks') + "#{name}!")
+    arrow_prompt(MESSAGES['thanks'] + "#{name}!")
   end
 end
 
 def print_start
-  arrow_prompt(messages('start'))
+  arrow_prompt(MESSAGES['start'])
   sleep 2
 end
 
 def print_round(round)
   clear_screen
-  arrow_prompt(messages('line') + " Round #{round} " + messages('line'))
+  arrow_prompt(MESSAGES['line'] + " Round #{round} " + MESSAGES['line'])
 end
 
 def print_score(name, score)
   if game_over?(score)
-    arrow_prompt(messages('final_score'))
+    arrow_prompt(MESSAGES['final_score'])
   else
-    arrow_prompt(messages('current_score'))
+    arrow_prompt(MESSAGES['current_score'])
   end
   arrow_prompt("#{name}: " + score[:player].to_s)
-  arrow_prompt(messages('computer_score') + score[:computer].to_s)
+  arrow_prompt(MESSAGES['computer_score'] + score[:computer].to_s)
 end
 
 def print_thinking
-  arrow_prompt(messages('thinking'))
+  arrow_prompt(MESSAGES['thinking'])
   sleep 2
   puts
 end
 
 def print_choices(choices)
-  arrow_prompt(messages('you_chose') + choices[:player].to_s.capitalize)
-  arrow_prompt(messages('computer_chose') + choices[:computer].to_s.capitalize)
+  arrow_prompt(MESSAGES['you_chose'] + choices[:player].to_s.capitalize)
+  arrow_prompt(MESSAGES['computer_chose'] + choices[:computer].to_s.capitalize)
   puts
 end
 
-def print_player_beats_computer(choices)
-  arrow_prompt(("#{choices[:player].capitalize} beats " +
-                choices[:computer].capitalize.to_s))
-  arrow_prompt(messages('you_won_round'))
-end
-
-def print_computer_beats_player(choices)
-  arrow_prompt(("#{choices[:computer].capitalize} beats " +
-                choices[:player].capitalize.to_s))
-  arrow_prompt(messages('computer_won_round'))
+def print_beats(first, second)
+  if win?(first, second)
+    arrow_prompt(("#{first.capitalize} beats " +
+                  second.capitalize.to_s))
+  elsif win?(second, first)
+    arrow_prompt(("#{second.capitalize} beats " +
+                  first.capitalize.to_s))
+  end
 end
 
 def print_results(choices)
   if win?(choices[:player], choices[:computer])
-    print_player_beats_computer(choices)
+    print_beats(choices[:player], choices[:computer])
+    arrow_prompt(MESSAGES['you_won_round'])
   elsif win?(choices[:computer], choices[:player])
-    print_computer_beats_player(choices)
+    print_beats(choices[:computer], choices[:player])
+    arrow_prompt(MESSAGES['computer_won_round'])
   else
-    arrow_prompt(messages('tie'))
+    arrow_prompt(MESSAGES['tie'])
   end
   puts
 end
 
 def print_champion(name, score)
   if score[:player] == ROUNDS_TO_WIN
-    arrow_prompt(messages('player_champion'))
+    arrow_prompt(MESSAGES['player_champion'])
     puts
     print_score(name, score)
 
   elsif score[:computer] == ROUNDS_TO_WIN
-    arrow_prompt(messages('computer_champion'))
+    arrow_prompt(MESSAGES['computer_champion'])
     puts
     print_score(name, score)
   end
@@ -258,7 +254,7 @@ end
 
 clear_screen
 
-arrow_prompt(messages('welcome'))
+arrow_prompt(MESSAGES['welcome'])
 name = get_name
 print_intro(name)
 
