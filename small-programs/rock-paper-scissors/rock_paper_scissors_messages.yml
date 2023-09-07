@@ -1,5 +1,24 @@
 welcome: "Welcome to the game Rock, Paper, Scissors, Lizard, Spock. What is your name?"
 invalid_name: "Sorry, I didn't get that. What is your name?"
+rules: "This game varies a bit from the traditional Rock, Paper, Scissors...
+\n
+\n=> In the traditional game:
+\n
+\n=> Rock crushes Scissors,
+\n=> Scissors cuts Paper,
+\n=> and Paper covers Rock.
+\n 
+\n=> In this game, you can also choose Lizard or Spock:
+\n
+\n=> Rock crushes Lizard,
+\n=> Lizard poisons Spock,
+\n=> Spock smashes Scissors,
+\n=> Scissors decapitates Lizard,
+\n=> Lizard eats Paper,
+\n=> Paper disproves Spock,
+\n=> and Spock vaporizes Rock."
+rounds: "The game will consist of a series of rounds. First to win "
+opponent: "I, the Computer, will be your opponent. Don't worry, I won't cheat!"
 play?: "Shall we play? (Y for yes N for no)"
 play_invalid: "Sorry, I didn't get that. Would you like to play or not?"
 start: "Great! Let's get started then..."
