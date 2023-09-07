@@ -2,12 +2,12 @@ welcome: "Welcome to the game Rock, Paper, Scissors, Lizard, Spock. What is your
 invalid_name: "Sorry, I didn't get that. What is your name?"
 rules: "This game varies a bit from the traditional Rock, Paper, Scissors...
 \n
-\n=> In the traditional game:
+\n=> In the traditional game: 
 \n
 \n=> Rock crushes Scissors,
 \n=> Scissors cuts Paper,
 \n=> and Paper covers Rock.
-\n 
+\n
 \n=> In this game, you can also choose Lizard or Spock:
 \n
 \n=> Rock crushes Lizard,

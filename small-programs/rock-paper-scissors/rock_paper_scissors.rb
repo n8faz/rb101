@@ -86,11 +86,6 @@ def play?
   answer
 end
 
-def rematch
-  arrow_prompt(MESSAGES['rematch'])
-  sleep 2
-end
-
 def play_again?
   answer = nil
   loop do
@@ -98,7 +93,7 @@ def play_again?
     answer = gets.chomp
     answer = yes_or_no?(answer)
     if answer == 'yes'
-      rematch
+      print_rematch
       break
     elsif answer == 'no'
       break
@@ -127,10 +122,6 @@ def next_round?
   answer
 end
 
-def game_over?(score)
-  score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
-end
-
 def keep_score(choices, score)
   if win?(choices[:player], choices[:computer])
     score[:player] += 1
@@ -138,6 +129,10 @@ def keep_score(choices, score)
     score[:computer] += 1
   end
   score
+end
+
+def game_over?(score)
+  score[:player] == ROUNDS_TO_WIN || score[:computer] == ROUNDS_TO_WIN
 end
 
 def print_intro(name)
@@ -192,16 +187,19 @@ def print_choices(choices)
 end
 
 def print_beats(first, second)
+  if win?(first, second)
     arrow_prompt(("#{first.capitalize} beats " +
-                  second.capitalize.to_s)) 
+                second.capitalize.to_s))
+  elsif win?(second, first)
+    arrow_prompt(("#{second.capitalize} beats " +
+                first.capitalize.to_s))
+  end
 end
 
 def print_results(choices)
   if win?(choices[:player], choices[:computer])
-    print_beats(choices[:player], choices[:computer])
     arrow_prompt(MESSAGES['you_won_round'])
   elsif win?(choices[:computer], choices[:player])
-    print_beats(choices[:computer], choices[:player])
     arrow_prompt(MESSAGES['computer_won_round'])
   else
     arrow_prompt(MESSAGES['tie'])
@@ -222,6 +220,11 @@ def print_champion(name, score)
   end
 end
 
+def print_rematch
+  arrow_prompt(MESSAGES['rematch'])
+  sleep 2
+end
+
 def round_loop(name, score, current_round)
   loop do
     current_round += 1
@@ -233,13 +236,14 @@ def round_loop(name, score, current_round)
 
     print_thinking
     print_choices(choices)
+    print_beats(choices[:player], choices[:computer])
     print_results(choices)
 
     score = keep_score(choices, score)
-
     print_champion(name, score)
     break if game_over?(score) || next_round? == 'quit'
   end
+  puts
 end
 
 # Program Start
@@ -257,10 +261,8 @@ if play == 'yes'
     score = { player: 0, computer: 0 }
     current_round = 0
     round_loop(name, score, current_round)
-    puts
     break unless play_again? == 'yes'
   end
 end
 
 print_which_exit_message?(play, name)
-
