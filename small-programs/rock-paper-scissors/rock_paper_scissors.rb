@@ -72,20 +72,22 @@ def get_name
   name
 end
 
+def yes_or_no?(answer)
+  if answer.downcase.start_with?('y')
+    'yes'
+  elsif answer.downcase.start_with?('n')
+    'no'
+  end
+end
+
 def play?
   answer = nil
   loop do
     arrow_prompt(messages('play?'))
     answer = gets.chomp
-    if answer.downcase.start_with?('y')
-      answer = 'yes'
-      break
-    elsif answer.downcase.start_with?('n')
-      answer = 'no'
-      break
-    else
-      arrow_prompt(messages('play_invalid'))
-    end
+    answer = yes_or_no?(answer)
+    break if answer == 'yes' || answer == 'no'
+    arrow_prompt(messages('play_invalid'))
   end
   answer
 end
@@ -93,7 +95,6 @@ end
 def rematch
   arrow_prompt(messages('rematch'))
   sleep 2
-  'rematch'
 end
 
 def play_again?
@@ -101,11 +102,11 @@ def play_again?
   loop do
     arrow_prompt(messages('again?'))
     answer = gets.chomp
-    if answer.downcase.start_with?('y')
-      answer = rematch
+    answer = yes_or_no?(answer)
+    if answer == 'yes'
+      rematch
       break
-    elsif answer.downcase.start_with?('n')
-      answer = 'no'
+    elsif answer == 'no'
       break
     else
       arrow_prompt(messages('again_invalid'))
@@ -146,7 +147,6 @@ def keep_score(choices, score)
 end
 
 # Methods that print
-
 def print_intro(name)
   arrow_prompt("Hi, #{name}!")
   puts
@@ -177,7 +177,7 @@ def print_round(round)
 end
 
 def print_score(name, score)
-  if game_over?(score) == true
+  if game_over?(score)
     arrow_prompt(messages('final_score'))
   else
     arrow_prompt(messages('current_score'))
@@ -266,12 +266,11 @@ play = play?
 if play == 'yes'
   print_start
   loop do # game loop
-    score = { player: 0,
-              computer: 0 }
+    score = { player: 0, computer: 0 }
     current_round = 0
     round_loop(name, score, current_round)
     puts
-    break unless play_again? == 'rematch'
+    break unless play_again? == 'yes'
   end
 end
 
